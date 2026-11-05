@@ -4,10 +4,14 @@ A phone-first pizza dough calculator with recipe planning, flour-strength blendi
 
 ## Development
 
+The project pins pnpm 12.16.1 through `devEngines.packageManager` in `package.json`, and the resolved version is recorded in `pnpm-lock.yaml`. pnpm switches to that version automatically, so installs are reproducible.
+
 ```sh
 pnpm install
 pnpm dev
 ```
+
+To update pnpm, run `pnpm self-update` and then `pnpm install` to refresh the lockfile.
 
 ## Checks
 
