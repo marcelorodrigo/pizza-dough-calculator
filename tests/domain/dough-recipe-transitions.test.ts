@@ -4,6 +4,7 @@ import { createDefaultDoughRecipeInput } from '../../app/domain/dough-recipe/def
 import { isDoughRecipeInput } from '../../app/domain/dough-recipe/persistence'
 import {
   applyDoughStyle,
+  normalizeDisabledDoughRecipeFields,
   setFlourCount,
   setTemperatureUnit,
   togglePreferment
@@ -151,6 +152,130 @@ describe('dough recipe state transitions', () => {
 
     expect(result.ingredients.flourSharesByCount['3']).toEqual([1, 1, 1])
     expect(result.ingredients.flourShares).toEqual([40, 60])
+    expect(isDoughRecipeInput(result)).toBe(true)
+  })
+})
+
+describe('normalizeDisabledDoughRecipeFields', () => {
+  it('resets invalid values of disabled fields to defaults without mutating the input', () => {
+    const input = createDefaultDoughRecipeInput()
+    input.target.secondBallCount = Number.NaN
+    input.target.secondBallWeightGrams = Number.NaN
+    input.target.oldDoughInPercent = Number.NaN
+    input.ingredients.flourShares[0] = 0
+    input.ingredients.fatPercent = Number.NaN
+    input.fermentation.controlledHours = Number.NaN
+    input.fermentation.controlledTemperature = Number.NaN
+    input.preferments.autolysisFlourPercent = Number.NaN
+    input.preferments.autolysisWaterPercent = Number.NaN
+    input.preferments.poolishFlourPercent = Number.NaN
+    input.preferments.poolishHours = Number.NaN
+    input.preferments.bigaFlourPercent = Number.NaN
+
+    const result = normalizeDisabledDoughRecipeFields(input)
+
+    expect(result.target).toMatchObject({
+      secondBallCount: 1,
+      secondBallWeightGrams: 250,
+      oldDoughInPercent: 0
+    })
+    expect(result.ingredients.flourShares).toEqual([1])
+    expect(result.ingredients.fatPercent).toBe(0)
+    expect(result.fermentation).toMatchObject({
+      controlledHours: 0,
+      controlledTemperature: 5
+    })
+    expect(result.preferments).toEqual({
+      autolysisEnabled: false,
+      autolysisFlourPercent: 50,
+      autolysisWaterPercent: 55,
+      poolishEnabled: false,
+      poolishFlourPercent: 30,
+      poolishHours: 4,
+      bigaEnabled: false,
+      bigaFlourPercent: 30
+    })
+    expect(isDoughRecipeInput(result)).toBe(true)
+    expect(Number.isNaN(input.target.secondBallCount)).toBe(true)
+    expect(input.ingredients.flourShares).toEqual([0])
+    expect(Number.isNaN(input.preferments.bigaFlourPercent)).toBe(true)
+  })
+
+  it('preserves valid values in disabled fields', () => {
+    const input = createDefaultDoughRecipeInput()
+    input.target.secondBallCount = 3
+    input.target.secondBallWeightGrams = 300
+    input.target.oldDoughInPercent = 10
+    input.ingredients.flourShares[0] = 70
+    input.ingredients.fatPercent = 5
+    input.fermentation.controlledHours = 12
+    input.fermentation.controlledTemperature = 4
+    input.preferments.autolysisFlourPercent = 60
+    input.preferments.autolysisWaterPercent = 70
+    input.preferments.poolishFlourPercent = 40
+    input.preferments.poolishHours = 6
+    input.preferments.bigaFlourPercent = 35
+
+    const result = normalizeDisabledDoughRecipeFields(input)
+
+    expect(result).toEqual(input)
+  })
+
+  it('does not reset invalid values when their section is enabled', () => {
+    const input = createDefaultDoughRecipeInput()
+    input.target.secondGroupEnabled = true
+    input.target.oldDoughInEnabled = true
+    input.ingredients.fatEnabled = true
+    input.fermentation.controlledEnabled = true
+    input.preferments.autolysisEnabled = true
+    input.preferments.poolishEnabled = true
+    input.preferments.bigaEnabled = true
+    input.target.secondBallCount = Number.NaN
+    input.target.secondBallWeightGrams = Number.NaN
+    input.target.oldDoughInPercent = Number.NaN
+    input.ingredients.fatPercent = Number.NaN
+    input.fermentation.controlledHours = Number.NaN
+    input.fermentation.controlledTemperature = Number.NaN
+    input.preferments.autolysisFlourPercent = Number.NaN
+    input.preferments.autolysisWaterPercent = Number.NaN
+    input.preferments.poolishFlourPercent = Number.NaN
+    input.preferments.poolishHours = Number.NaN
+    input.preferments.bigaFlourPercent = Number.NaN
+
+    const result = normalizeDisabledDoughRecipeFields(input)
+
+    expect(Number.isNaN(result.target.secondBallCount)).toBe(true)
+    expect(Number.isNaN(result.target.oldDoughInPercent)).toBe(true)
+    expect(Number.isNaN(result.ingredients.fatPercent)).toBe(true)
+    expect(Number.isNaN(result.fermentation.controlledHours)).toBe(true)
+    expect(Number.isNaN(result.preferments.poolishHours)).toBe(true)
+    expect(Number.isNaN(result.preferments.bigaFlourPercent)).toBe(true)
+    expect(isDoughRecipeInput(result)).toBe(false)
+  })
+
+  it('only resets the flour share when a single flour is used', () => {
+    const singleFlour = createDefaultDoughRecipeInput()
+    singleFlour.ingredients.flourShares[0] = 0
+
+    expect(normalizeDisabledDoughRecipeFields(singleFlour).ingredients.flourShares).toEqual([1])
+
+    const multipleFlours = createDefaultDoughRecipeInput()
+    multipleFlours.ingredients.flourCount = 2
+    multipleFlours.ingredients.flourShares = [0, 60]
+
+    expect(normalizeDisabledDoughRecipeFields(multipleFlours).ingredients.flourShares).toEqual([0, 60])
+  })
+
+  it('converts the default controlled temperature into the current unit', () => {
+    const input = createDefaultDoughRecipeInput()
+    input.fermentation.temperatureUnit = 'F'
+    input.fermentation.roomTemperature = 68
+    input.fermentation.controlledTemperature = Number.NaN
+
+    const result = normalizeDisabledDoughRecipeFields(input)
+
+    expect(result.fermentation.controlledTemperature).toBe(41)
+    expect(result.fermentation.temperatureUnit).toBe('F')
     expect(isDoughRecipeInput(result)).toBe(true)
   })
 })
