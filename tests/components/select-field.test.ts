@@ -10,14 +10,14 @@ const options = [
 describe('SelectField', () => {
   it('renders an accessible labelled native select with the provided options', () => {
     const wrapper = mount(SelectField, {
-      props: { modelValue: 'neapolitan', label: 'Dough style', options }
+      props: { modelValue: 'pan-pizza', label: 'Dough style', options }
     })
     const select = wrapper.get('select')
 
     expect(wrapper.get('label').text()).toContain('Dough style')
     expect(select.findAll('option').map(option => [option.attributes('value'), option.text()]))
       .toEqual([['neapolitan', 'Neapolitan'], ['pan-pizza', 'Pan Pizza']])
-    expect((select.element as HTMLSelectElement).value).toBe('neapolitan')
+    expect((select.element as HTMLSelectElement).value).toBe('pan-pizza')
   })
 
   it('emits the selected value', async () => {

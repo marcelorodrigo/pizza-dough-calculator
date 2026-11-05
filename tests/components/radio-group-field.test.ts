@@ -14,9 +14,13 @@ describe('RadioGroupField', () => {
       props: { modelValue: 'LBF', legend: 'Yeast type', name: 'dough-yeast-type', options }
     })
 
+    const inputs = wrapper.findAll('input[type="radio"]')
+
     expect(wrapper.get('legend').text()).toBe('Yeast type')
-    expect(wrapper.findAll('input[type="radio"]').map(input => input.attributes('value')))
+    expect(inputs.map(input => input.attributes('value')))
       .toEqual(['LBF', 'LSI', 'LMS'])
+    expect(inputs.map(input => input.attributes('name')))
+      .toEqual(['dough-yeast-type', 'dough-yeast-type', 'dough-yeast-type'])
     expect((wrapper.get('input[value="LBF"]').element as HTMLInputElement).checked).toBe(true)
   })
 
