@@ -36,7 +36,7 @@ function update<K extends keyof DoughRecipeInput['target']>(
 
 <template>
   <SectionCard heading-id="target-heading" eyebrow="Start with the bake" title="Dough target" step="01">
-    <div class="field-grid field-grid--two">
+    <div class="grid grid-cols-2 gap-[14px] below-420:grid-cols-1">
       <SelectField
         label="Dough style"
         :options="styleOptions"
@@ -49,34 +49,33 @@ function update<K extends keyof DoughRecipeInput['target']>(
       />
     </div>
 
-    <div class="inline-fields">
+    <div class="mt-[14px] grid grid-cols-2 gap-[12px] below-420:grid-cols-1">
       <NumberField label="Ball count" :model-value="modelValue.firstBallCount" :min="1" :max="200" :step="1" :error="errors['target.firstBallCount']" @update:model-value="update('firstBallCount', $event)" />
       <NumberField label="Ball weight" unit="g" :model-value="modelValue.firstBallWeightGrams" :min="10" :max="1500" :step="5" :error="errors['target.firstBallWeightGrams']" @update:model-value="update('firstBallWeightGrams', $event)" />
     </div>
 
-    <div class="check-row" style="margin-top: 16px">
+    <div class="mt-[16px] mb-[16px] flex flex-wrap gap-x-[20px] gap-y-[12px]">
       <CheckboxField
         label="Add a second ball size"
         :model-value="modelValue.secondGroupEnabled"
         @update:model-value="update('secondGroupEnabled', $event)"
       />
     </div>
-    <div v-if="modelValue.secondGroupEnabled" class="inline-fields">
+    <div v-if="modelValue.secondGroupEnabled" class="mt-[14px] grid grid-cols-2 gap-[12px] below-420:grid-cols-1">
       <NumberField label="Second ball count" :model-value="modelValue.secondBallCount" :min="1" :max="200" :step="1" :error="errors['target.secondBallCount']" @update:model-value="update('secondBallCount', $event)" />
       <NumberField label="Second ball weight" unit="g" :model-value="modelValue.secondBallWeightGrams" :min="10" :max="1500" :step="5" :error="errors['target.secondBallWeightGrams']" @update:model-value="update('secondBallWeightGrams', $event)" />
     </div>
 
-    <hr class="field-divider">
-    <div class="field-grid field-grid--two">
+    <hr class="my-[18px] border-t border-[#eee9e0]">
+    <div class="grid grid-cols-2 gap-[14px] below-420:grid-cols-1">
       <NumberField label="Old dough out" unit="g" :model-value="modelValue.oldDoughOutGrams" :min="0" :max="500" :step="10" :error="errors['target.oldDoughOutGrams']" @update:model-value="update('oldDoughOutGrams', $event)" />
       <CheckboxField
-        class="old-dough-toggle"
         label="Include old dough in"
         :model-value="modelValue.oldDoughInEnabled"
         @update:model-value="update('oldDoughInEnabled', $event)"
       />
     </div>
-    <div v-if="modelValue.oldDoughInEnabled" class="inline-fields">
+    <div v-if="modelValue.oldDoughInEnabled" class="mt-[14px] grid grid-cols-2 gap-[12px] below-420:grid-cols-1">
       <NumberField label="Old dough in" unit="%" :model-value="modelValue.oldDoughInPercent" :min="0" :max="20" :step="1" :error="errors['target.oldDoughInPercent']" @update:model-value="update('oldDoughInPercent', $event)" />
       <SelectField
         label="Old dough strength"

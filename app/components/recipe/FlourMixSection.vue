@@ -36,7 +36,7 @@ function updateShare(index: number, value: number) {
 
 <template>
   <SectionCard heading-id="flour-heading" eyebrow="Build the base" title="Flour & ingredients" step="02">
-    <div class="field-grid field-grid--two">
+    <div class="grid grid-cols-2 gap-[14px] below-420:grid-cols-1">
       <SelectField
         label="Number of flours"
         :options="flourCountOptions"
@@ -47,16 +47,16 @@ function updateShare(index: number, value: number) {
       <NumberField label="Salt" unit="%" :model-value="modelValue.saltPercent" :min="0" :max="6" :step="0.1" :error="errors['ingredients.saltPercent']" @update:model-value="update('saltPercent', $event)" />
       <NumberField label="Fat" unit="%" :model-value="modelValue.fatPercent" :min="0" :max="10" :step="0.1" :disabled="!modelValue.fatEnabled" :error="errors['ingredients.fatPercent']" @update:model-value="update('fatPercent', $event)" />
     </div>
-    <div class="check-row" style="margin-top: 16px">
+    <div class="mt-[16px] mb-[16px] flex flex-wrap gap-x-[20px] gap-y-[12px]">
       <CheckboxField
         label="Add fat to the dough"
         :model-value="modelValue.fatEnabled"
         @update:model-value="update('fatEnabled', $event)"
       />
     </div>
-    <div v-if="modelValue.flourCount > 1" class="share-fields">
-      <p class="share-fields__hint">Shares must total exactly 100% for individual amounts.</p>
-      <div class="field-grid field-grid--three">
+    <div v-if="modelValue.flourCount > 1">
+      <p class="my-4">Shares must total exactly 100% for individual amounts.</p>
+      <div class="grid grid-cols-3 gap-[14px] below-720:grid-cols-2 below-420:grid-cols-1">
         <NumberField
           v-for="index in modelValue.flourCount" :key="index"
           :label="`Flour ${index} share`" unit="%"
