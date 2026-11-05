@@ -62,7 +62,7 @@ jobs:
           if (pr.base?.repo?.full_name !== repository || baseBranch !== 'master') {
             throw new Error('Artifact PR does not target this repository master branch')
           }
-          if (!/^[A-Za-z0-9._/-]+$/.test(headBranch ?? '') || headBranch.includes('..') || headBranch.includes('//') || headBranch.startsWith('/') || headBranch.endsWith('/') || headBranch !== process.env.WORKFLOW_HEAD_BRANCH) {
+          if (!/^[A-Za-z0-9._/+-]+$/.test(headBranch ?? '') || headBranch.includes('..') || headBranch.includes('//') || headBranch.startsWith('/') || headBranch.endsWith('/') || headBranch !== process.env.WORKFLOW_HEAD_BRANCH) {
             throw new Error('PR branch contains unsupported characters')
           }
 
