@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import AppHeader from '../components/app/AppHeader.vue'
-import CalculatorNavigation from '../components/app/CalculatorNavigation.vue'
 import OfflineStatus from '../components/app/OfflineStatus.vue'
 import PwaUpdatePrompt from '../components/app/PwaUpdatePrompt.vue'
 </script>

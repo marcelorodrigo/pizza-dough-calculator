@@ -14,6 +14,7 @@ describe('isDoughRecipeInput', () => {
     ['out-of-range remembered flour shares', (value: ReturnType<typeof createDefaultDoughRecipeInput>) => { value.ingredients.flourSharesByCount['3'] = [0, 50, 50] }],
     ['off-step remembered flour shares', (value: ReturnType<typeof createDefaultDoughRecipeInput>) => { value.ingredients.flourSharesByCount['3'] = [1.5, 49.5, 49] }],
     ['invalid yeast code', (value: ReturnType<typeof createDefaultDoughRecipeInput>) => { (value.yeast as { type: string }).type = 'wild' }],
+    ['display label instead of style id', (value: ReturnType<typeof createDefaultDoughRecipeInput>) => { (value as { style: string }).style = 'Pan Pizza' }],
     ['out-of-range active input', (value: ReturnType<typeof createDefaultDoughRecipeInput>) => { value.target.firstBallCount = 0 }],
     ['out-of-range disabled second group', (value: ReturnType<typeof createDefaultDoughRecipeInput>) => { value.target.secondBallWeightGrams = 1505 }],
     ['out-of-range disabled old dough input', (value: ReturnType<typeof createDefaultDoughRecipeInput>) => { value.target.oldDoughInPercent = 21 }],

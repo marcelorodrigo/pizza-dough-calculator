@@ -5,7 +5,7 @@ import { applyDoughStyle } from '../../app/domain/dough-recipe/transitions'
 import { validateDoughRecipeInput } from '../../app/domain/dough-recipe/validation'
 
 describe('calculateDoughRecipe', () => {
-  it('calculates the documented default Verace recipe without rounding intermediates', () => {
+  it('calculates the documented default Neapolitan recipe without rounding intermediates', () => {
     const result = calculateDoughRecipe(createDefaultDoughRecipeInput())
 
     expect(result.targetMassGrams).toBe(250)
@@ -90,7 +90,7 @@ describe('calculateDoughRecipe', () => {
 
   it('warns when sourdough flour exceeds the available recipe flour', () => {
     const input = createDefaultDoughRecipeInput()
-    input.style = 'Teglia'
+    input.style = 'pan-pizza'
     input.target.firstBallWeightGrams = 15
     input.ingredients.hydrationPercent = 100
     input.ingredients.saltPercent = 6
@@ -136,8 +136,8 @@ describe('calculateDoughRecipe', () => {
     expect(result.mainDough.yeastGrams).toBeCloseTo(0.32073443837949195, 10)
   })
 
-  it('uses the Teglia water-mass yeast expression after resolving flour', () => {
-    const input = applyDoughStyle(createDefaultDoughRecipeInput(), 'Teglia')
+  it('uses the Pan Pizza water-mass yeast expression after resolving flour', () => {
+    const input = applyDoughStyle(createDefaultDoughRecipeInput(), 'pan-pizza')
 
     const result = calculateDoughRecipe(input)
 

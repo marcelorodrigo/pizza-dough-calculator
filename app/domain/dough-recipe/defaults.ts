@@ -2,7 +2,7 @@ import type { DoughRecipeInput } from './types'
 
 export function createDefaultDoughRecipeInput(): DoughRecipeInput {
   return {
-    style: 'Verace',
+    style: 'neapolitan',
     target: {
       firstBallCount: 1,
       firstBallWeightGrams: 250,

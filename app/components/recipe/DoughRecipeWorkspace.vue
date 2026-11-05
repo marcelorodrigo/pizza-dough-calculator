@@ -16,7 +16,7 @@ import {
   togglePreferment
 } from '../../domain/dough-recipe/transitions'
 import { validateDoughRecipeInput } from '../../domain/dough-recipe/validation'
-import type { DoughRecipeInput, DoughStyle, PrefermentType, TemperatureUnit } from '../../domain/dough-recipe/types'
+import type { DoughRecipeInput, DoughStyleId, PrefermentType, TemperatureUnit } from '../../domain/dough-recipe/types'
 import { usePersistedCalculatorState } from '../../composables/usePersistedCalculatorState'
 
 const recipe = usePersistedCalculatorState(
@@ -60,7 +60,7 @@ function updatePreferments(preferments: DoughRecipeInput['preferments']) {
   recipe.value = normalizeDisabledDoughRecipeFields({ ...recipe.value, preferments })
 }
 
-function changeStyle(style: DoughStyle) {
+function changeStyle(style: DoughStyleId) {
   recipe.value = applyDoughStyle(recipe.value, style)
 }
 
