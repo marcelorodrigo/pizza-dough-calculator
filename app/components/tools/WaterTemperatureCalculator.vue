@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import NumberField from '../form/NumberField.vue'
+import SelectField from '../form/SelectField.vue'
+import SectionCard from '../ui/SectionCard.vue'
 import {
   calculateWaterTemperature,
   setWaterTemperatureUnit,
@@ -8,6 +10,7 @@ import {
 } from '../../domain/water-temperature'
 import { validateWaterTemperatureInput } from '../../domain/secondary-validation'
 import { formatTemperature } from '../../utils/format-results'
+import { temperatureUnitOptions } from '../../utils/temperature-unit-options'
 
 const model = defineModel<WaterTemperatureInput>({ required: true })
 const errors = computed(() => validateWaterTemperatureInput(model.value))
@@ -20,6 +23,14 @@ const formattedResult = computed(() => result.value === undefined
   ? '–'
   : formatTemperature(result.value, model.value.temperatureUnit))
 
+const mixerOptions = [
+  { value: 'fork', label: 'Fork' },
+  { value: 'spiral', label: 'Spiral' },
+  { value: 'planetary', label: 'Planetary' },
+  { value: 'plunging-arms', label: 'Plunging arms' },
+  { value: 'hands', label: 'Hands' }
+] as const
+
 function update<K extends keyof WaterTemperatureInput>(key: K, value: WaterTemperatureInput[K]) {
   model.value = { ...model.value, [key]: value }
 }
@@ -30,30 +41,28 @@ function changeUnit(unit: WaterTemperatureInput['temperatureUnit']) {
 </script>
 
 <template>
-  <section class="tool-card water-tool" aria-labelledby="water-temperature-heading">
-    <div class="section-heading">
-      <div><p class="eyebrow">Tune your mix</p><h2 id="water-temperature-heading">Water temperature</h2></div>
-      <span class="step-mark">01</span>
-    </div>
-    <p class="section-copy">Balance room temperature and mixer friction to reach your desired final dough temperature.</p>
+  <SectionCard
+    class="water-tool"
+    heading-id="water-temperature-heading"
+    eyebrow="Tune your mix"
+    title="Water temperature"
+    step="01"
+    variant="tool"
+    copy="Balance room temperature and mixer friction to reach your desired final dough temperature."
+  >
     <div class="field-grid field-grid--two">
-      <label class="select-field">
-        <span>Temperature unit</span>
-        <select :value="model.temperatureUnit" @change="changeUnit(($event.target as HTMLSelectElement).value as 'C' | 'F')">
-          <option value="C">Celsius (°C)</option>
-          <option value="F">Fahrenheit (°F)</option>
-        </select>
-      </label>
-      <label class="select-field">
-        <span>Mixer</span>
-        <select :value="model.mixer" @change="update('mixer', ($event.target as HTMLSelectElement).value as WaterTemperatureInput['mixer'])">
-          <option value="fork">Fork</option>
-          <option value="spiral">Spiral</option>
-          <option value="planetary">Planetary</option>
-          <option value="plunging-arms">Plunging arms</option>
-          <option value="hands">Hands</option>
-        </select>
-      </label>
+      <SelectField
+        label="Temperature unit"
+        :options="temperatureUnitOptions"
+        :model-value="model.temperatureUnit"
+        @update:model-value="changeUnit($event as 'C' | 'F')"
+      />
+      <SelectField
+        label="Mixer"
+        :options="mixerOptions"
+        :model-value="model.mixer"
+        @update:model-value="update('mixer', $event as WaterTemperatureInput['mixer'])"
+      />
       <NumberField
         id="desired-dough-temperature"
         label="Desired final dough temperature" :unit="`°${model.temperatureUnit}`"
@@ -73,5 +82,5 @@ function changeUnit(unit: WaterTemperatureInput['temperatureUnit']) {
       <div><span>Water temperature</span><output aria-label="Water temperature result">{{ formattedResult }}</output></div>
     </div>
     <p class="result-note">The calculated water temperature has a minimum of 4°C.</p>
-  </section>
+  </SectionCard>
 </template>

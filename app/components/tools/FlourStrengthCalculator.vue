@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import NumberField from '../form/NumberField.vue'
+import SectionCard from '../ui/SectionCard.vue'
 import {
   calculateFlourStrengthBlend,
   calculateWeightedFlourStrength
@@ -51,15 +52,14 @@ function blendShare(value: number | undefined): string {
 
 <template>
   <div class="calculator-sections">
-    <section class="tool-card" aria-labelledby="blend-heading">
-      <div class="section-heading">
-        <div>
-          <p class="eyebrow">Blend two flours</p>
-          <h2 id="blend-heading">Reach a target W</h2>
-        </div>
-        <span class="step-mark">01</span>
-      </div>
-      <p class="section-copy">Find the proportions of two flours needed to hit your target strength.</p>
+    <SectionCard
+      heading-id="blend-heading"
+      eyebrow="Blend two flours"
+      title="Reach a target W"
+      step="01"
+      variant="tool"
+      copy="Find the proportions of two flours needed to hit your target strength."
+    >
       <div class="field-grid field-grid--three">
         <NumberField
           id="target-w"
@@ -84,17 +84,16 @@ function blendShare(value: number | undefined): string {
         <div><span>Flour 1 share</span><output aria-label="Flour 1 share">{{ flour1ShareDisplay }}</output></div>
         <div><span>Flour 2 share</span><output aria-label="Flour 2 share">{{ flour2ShareDisplay }}</output></div>
       </div>
-    </section>
+    </SectionCard>
 
-    <section class="tool-card" aria-labelledby="weighted-heading">
-      <div class="section-heading">
-        <div>
-          <p class="eyebrow">Already have a blend?</p>
-          <h2 id="weighted-heading">Calculate its W</h2>
-        </div>
-        <span class="step-mark">02</span>
-      </div>
-      <p class="section-copy">Enter each flour’s percentage. Shares must add up to exactly 100%.</p>
+    <SectionCard
+      heading-id="weighted-heading"
+      eyebrow="Already have a blend?"
+      title="Calculate its W"
+      step="02"
+      variant="tool"
+      copy="Enter each flour’s percentage. Shares must add up to exactly 100%."
+    >
       <div class="field-grid flour-slots">
         <div v-for="index in 4" :key="index" class="flour-slot">
           <h3>Flour {{ index }}</h3>
@@ -119,6 +118,6 @@ function blendShare(value: number | undefined): string {
       <div class="result-strip result-strip--single" aria-live="polite">
         <div><span>Weighted flour strength</span><output aria-label="Weighted flour strength">{{ weightedDisplay }}</output></div>
       </div>
-    </section>
+    </SectionCard>
   </div>
 </template>

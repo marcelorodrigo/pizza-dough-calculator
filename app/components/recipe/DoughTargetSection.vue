@@ -1,12 +1,20 @@
 <script setup lang="ts">
+import CheckboxField from '../form/CheckboxField.vue'
 import NumberField from '../form/NumberField.vue'
+import SelectField from '../form/SelectField.vue'
+import SectionCard from '../ui/SectionCard.vue'
 import type { DoughRecipeInput, DoughStyleId } from '../../domain/dough-recipe/types'
 import type { DoughRecipeFieldErrors } from '../../domain/dough-recipe/validation'
 
 const styleOptions = [
-  { id: 'neapolitan', label: 'Neapolitan' },
-  { id: 'pan-pizza', label: 'Pan Pizza' }
-] as const satisfies ReadonlyArray<{ id: DoughStyleId; label: string }>
+  { value: 'neapolitan', label: 'Neapolitan' },
+  { value: 'pan-pizza', label: 'Pan Pizza' }
+] as const satisfies ReadonlyArray<{ value: DoughStyleId; label: string }>
+
+const oldDoughStrengthOptions = [
+  { value: 'low', label: 'Low' },
+  { value: 'high', label: 'High' }
+] as const
 
 const props = defineProps<{
   modelValue: DoughRecipeInput['target']
@@ -27,20 +35,14 @@ function update<K extends keyof DoughRecipeInput['target']>(
 </script>
 
 <template>
-  <section class="form-card" aria-labelledby="target-heading">
-    <div class="section-heading">
-      <div><p class="eyebrow">Start with the bake</p><h2 id="target-heading">Dough target</h2></div>
-      <span class="step-mark">01</span>
-    </div>
+  <SectionCard heading-id="target-heading" eyebrow="Start with the bake" title="Dough target" step="01">
     <div class="field-grid field-grid--two">
-      <label class="select-field">
-        <span>Dough style</span>
-        <select :value="style" @change="$emit('update:style', ($event.target as HTMLSelectElement).value as DoughStyleId)">
-          <option v-for="option in styleOptions" :key="option.id" :value="option.id">
-            {{ option.label }}
-          </option>
-        </select>
-      </label>
+      <SelectField
+        label="Dough style"
+        :options="styleOptions"
+        :model-value="style"
+        @update:model-value="$emit('update:style', $event as DoughStyleId)"
+      />
       <NumberField
         label="Wastage" unit="%" :model-value="modelValue.wastagePercent" :min="0" :max="5" :step="1"
         :error="errors['target.wastagePercent']" @update:model-value="update('wastagePercent', $event)"
@@ -53,7 +55,11 @@ function update<K extends keyof DoughRecipeInput['target']>(
     </div>
 
     <div class="check-row" style="margin-top: 16px">
-      <label class="check-control"><input type="checkbox" :checked="modelValue.secondGroupEnabled" @change="update('secondGroupEnabled', ($event.target as HTMLInputElement).checked)">Add a second ball size</label>
+      <CheckboxField
+        label="Add a second ball size"
+        :model-value="modelValue.secondGroupEnabled"
+        @update:model-value="update('secondGroupEnabled', $event)"
+      />
     </div>
     <div v-if="modelValue.secondGroupEnabled" class="inline-fields">
       <NumberField label="Second ball count" :model-value="modelValue.secondBallCount" :min="1" :max="200" :step="1" :error="errors['target.secondBallCount']" @update:model-value="update('secondBallCount', $event)" />
@@ -63,17 +69,21 @@ function update<K extends keyof DoughRecipeInput['target']>(
     <hr class="field-divider">
     <div class="field-grid field-grid--two">
       <NumberField label="Old dough out" unit="g" :model-value="modelValue.oldDoughOutGrams" :min="0" :max="500" :step="10" :error="errors['target.oldDoughOutGrams']" @update:model-value="update('oldDoughOutGrams', $event)" />
-      <label class="check-control old-dough-toggle"><input type="checkbox" :checked="modelValue.oldDoughInEnabled" @change="update('oldDoughInEnabled', ($event.target as HTMLInputElement).checked)">Include old dough in</label>
+      <CheckboxField
+        class="old-dough-toggle"
+        label="Include old dough in"
+        :model-value="modelValue.oldDoughInEnabled"
+        @update:model-value="update('oldDoughInEnabled', $event)"
+      />
     </div>
     <div v-if="modelValue.oldDoughInEnabled" class="inline-fields">
       <NumberField label="Old dough in" unit="%" :model-value="modelValue.oldDoughInPercent" :min="0" :max="20" :step="1" :error="errors['target.oldDoughInPercent']" @update:model-value="update('oldDoughInPercent', $event)" />
-      <label class="select-field">
-        <span>Old dough strength</span>
-        <select :value="modelValue.oldDoughStrength" @change="update('oldDoughStrength', ($event.target as HTMLSelectElement).value as 'low' | 'high')">
-          <option value="low">Low</option>
-          <option value="high">High</option>
-        </select>
-      </label>
+      <SelectField
+        label="Old dough strength"
+        :options="oldDoughStrengthOptions"
+        :model-value="modelValue.oldDoughStrength"
+        @update:model-value="update('oldDoughStrength', $event as DoughRecipeInput['target']['oldDoughStrength'])"
+      />
     </div>
-  </section>
+  </SectionCard>
 </template>
