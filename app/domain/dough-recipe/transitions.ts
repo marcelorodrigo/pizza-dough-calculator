@@ -157,9 +157,9 @@ export function applyDoughStyle(input: DoughRecipeInput, style: DoughStyle): Dou
     'C',
     next.fermentation.temperatureUnit
   )
-  next.fermentation.controlledEnabled = style === 'Teglia'
-  next.ingredients.fatEnabled = style === 'Teglia'
-  if (style === 'Teglia') next.ingredients.fatPercent = 2.5
+  next.fermentation.controlledEnabled = style === 'Pan Pizza'
+  next.ingredients.fatEnabled = style === 'Pan Pizza'
+  if (style === 'Pan Pizza') next.ingredients.fatPercent = 2.5
   next.preferments.poolishEnabled = false
   next.preferments.bigaEnabled = false
   return normalizeDisabledDoughRecipeFields(next)

@@ -32,7 +32,7 @@ function update<K extends keyof DoughRecipeInput['target']>(
         <span>Dough style</span>
         <select :value="style" @change="$emit('update:style', ($event.target as HTMLSelectElement).value as DoughStyle)">
           <option value="Neapolitan">Neapolitan</option>
-          <option value="Teglia">Teglia</option>
+          <option value="Pan Pizza">Pan Pizza</option>
         </select>
       </label>
       <NumberField

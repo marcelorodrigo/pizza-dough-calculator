@@ -25,7 +25,7 @@ describe('dough recipe state transitions', () => {
     expect(input.ingredients.flourSharesByCount['2']).toBeUndefined()
     expect(result.ingredients.flourShares).toEqual([55, 1])
     expect(result.ingredients.flourSharesByCount['2']).toEqual([66, 1])
-    expect(() => applyDoughStyle(input, 'Teglia')).not.toThrow()
+    expect(() => applyDoughStyle(input, 'Pan Pizza')).not.toThrow()
     expect(() => setTemperatureUnit(input, 'F')).not.toThrow()
     expect(() => togglePreferment(input, 'poolish')).not.toThrow()
   })
@@ -42,14 +42,14 @@ describe('dough recipe state transitions', () => {
     expect(input.fermentation.controlledTemperature).toBe(5)
   })
 
-  it('applies Teglia defaults and disables poolish and biga only', () => {
+  it('applies Pan Pizza defaults and disables poolish and biga only', () => {
     const input = createDefaultDoughRecipeInput()
     input.preferments.autolysisEnabled = true
     input.preferments.poolishEnabled = true
     input.preferments.bigaEnabled = true
     input.target.oldDoughInEnabled = true
 
-    const result = applyDoughStyle(input, 'Teglia')
+    const result = applyDoughStyle(input, 'Pan Pizza')
 
     expect(result.target.firstBallWeightGrams).toBe(600)
     expect(result.target.secondBallWeightGrams).toBe(400)
@@ -80,7 +80,7 @@ describe('dough recipe state transitions', () => {
   it('keeps style defaults at the same physical temperature when Fahrenheit is selected', () => {
     const fahrenheit = setTemperatureUnit(createDefaultDoughRecipeInput(), 'F')
 
-    const result = applyDoughStyle(fahrenheit, 'Teglia')
+    const result = applyDoughStyle(fahrenheit, 'Pan Pizza')
 
     expect(result.fermentation.temperatureUnit).toBe('F')
     expect(result.fermentation.roomTemperature).toBe(68)
@@ -100,11 +100,11 @@ describe('dough recipe state transitions', () => {
     invalidBiga.preferments.bigaEnabled = true
     invalidBiga.preferments.bigaFlourPercent = Number.NaN
 
-    const teglia = applyDoughStyle(invalidBiga, 'Teglia')
+    const panPizza = applyDoughStyle(invalidBiga, 'Pan Pizza')
 
-    expect(teglia.preferments.bigaEnabled).toBe(false)
-    expect(teglia.preferments.bigaFlourPercent).toBe(30)
-    expect(isDoughRecipeInput(teglia)).toBe(true)
+    expect(panPizza.preferments.bigaEnabled).toBe(false)
+    expect(panPizza.preferments.bigaFlourPercent).toBe(30)
+    expect(isDoughRecipeInput(panPizza)).toBe(true)
 
     const invalidPoolish = createDefaultDoughRecipeInput()
     invalidPoolish.preferments.poolishEnabled = true

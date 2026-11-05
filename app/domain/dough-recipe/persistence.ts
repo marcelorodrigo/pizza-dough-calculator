@@ -37,7 +37,7 @@ export function isDoughRecipeInput(value: unknown): value is DoughRecipeInput {
   const preferments = value.preferments as Record<string, unknown>
   const flourCount = ingredients.flourCount
 
-  const hasValidShape = (value.style === 'Neapolitan' || value.style === 'Teglia')
+  const hasValidShape = (value.style === 'Neapolitan' || value.style === 'Pan Pizza')
     && hasFiniteNumbers(target, [
       'firstBallCount', 'firstBallWeightGrams', 'secondBallCount', 'secondBallWeightGrams',
       'wastagePercent', 'oldDoughOutGrams', 'oldDoughInPercent'

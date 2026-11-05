@@ -160,7 +160,7 @@ function calculateSourdoughSplit(
   return null
 }
 
-function calculateTegliaYeastGrams(
+function calculatePanPizzaYeastGrams(
   adjustmentFactor: number,
   totalFlourGrams: number,
   hydrationPercent: number,
@@ -190,8 +190,8 @@ function calculateFlourAndYeastMasses(
   const yeastPercent = 100 * yeastGrams / initialFlourGrams
   const resolvedFlourGrams = newDoughMassGrams
     / (1 + (hydrationPercent + saltPercent + fatPercent + yeastPercent) / 100)
-  const finalYeastGrams = input.style === 'Teglia'
-    ? calculateTegliaYeastGrams(adjustmentFactor, resolvedFlourGrams, hydrationPercent, yeastRate)
+  const finalYeastGrams = input.style === 'Pan Pizza'
+    ? calculatePanPizzaYeastGrams(adjustmentFactor, resolvedFlourGrams, hydrationPercent, yeastRate)
     : yeastGrams
 
   const sourdough = calculateSourdoughSplit(input.yeast.type, finalYeastGrams)
