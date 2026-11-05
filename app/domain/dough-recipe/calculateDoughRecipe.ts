@@ -93,51 +93,132 @@ function prefermentYeastFactor(type: YeastType): number {
   return 1
 }
 
-export function calculateDoughRecipe(input: DoughRecipeInput): DoughRecipeResult {
-  const { target, ingredients, fermentation, yeast, preferments } = input
-  const oldDoughInPercent = target.oldDoughInEnabled ? target.oldDoughInPercent : 0
+interface TargetMasses {
+  targetMassGrams: number
+  oldDoughInPercent: number
+  oldDoughInMassGrams: number
+  newDoughMassGrams: number
+}
+
+function calculateTargetMasses(target: DoughRecipeInput['target']): TargetMasses {
+  const secondGroupMass = target.secondGroupEnabled
+    ? target.secondBallCount * target.secondBallWeightGrams
+    : 0
   const requestedBallMass = target.firstBallCount * target.firstBallWeightGrams
-    + (target.secondGroupEnabled ? target.secondBallCount * target.secondBallWeightGrams : 0)
+    + secondGroupMass
     + target.oldDoughOutGrams
   const targetMassGrams = requestedBallMass * (1 + target.wastagePercent / 100)
+  const oldDoughInPercent = target.oldDoughInEnabled ? target.oldDoughInPercent : 0
   const oldDoughInMassGrams = targetMassGrams * oldDoughInPercent / 100
-  const newDoughMassGrams = targetMassGrams - oldDoughInMassGrams
-  const hydrationPercent = ingredients.hydrationPercent
-  const saltPercent = ingredients.saltPercent
-  const fatPercent = ingredients.fatEnabled ? ingredients.fatPercent : 0
-  const yeastRate = calculateYeastRate(input, oldDoughInPercent)
-  const adjustment = 1 + yeast.adjustmentPercent / 100
-  const styleFactor = input.style === 'Verace' ? 0.9 : 2.2
-  const hasYeastPreferment = preferments.poolishEnabled || preferments.bigaEnabled
-  const initialFlour = newDoughMassGrams
-    / (1 + (hydrationPercent + saltPercent + fatPercent + yeastRate) / 100)
-  let yeastGrams = adjustment * styleFactor * 1.8 * initialFlour ** -0.1
-    * (initialFlour * yeastRate / 100)
-  if (hasYeastPreferment) yeastGrams /= 2
 
-  const yeastPercent = 100 * yeastGrams / initialFlour
-  let totalFlourGrams = newDoughMassGrams
-    / (1 + (hydrationPercent + saltPercent + fatPercent + yeastPercent) / 100)
-
-  if (input.style === 'Teglia') {
-    yeastGrams = adjustment * 2.2 * 1.8 * totalFlourGrams ** -0.1
-      * ((totalFlourGrams * hydrationPercent / 100) * yeastRate / 100)
+  return {
+    targetMassGrams,
+    oldDoughInPercent,
+    oldDoughInMassGrams,
+    newDoughMassGrams: targetMassGrams - oldDoughInMassGrams
   }
+}
 
+interface IngredientPercents {
+  hydrationPercent: number
+  saltPercent: number
+  fatPercent: number
+}
+
+function resolveIngredientPercents(
+  ingredients: DoughRecipeInput['ingredients']
+): IngredientPercents {
+  return {
+    hydrationPercent: ingredients.hydrationPercent,
+    saltPercent: ingredients.saltPercent,
+    fatPercent: ingredients.fatEnabled ? ingredients.fatPercent : 0
+  }
+}
+
+interface FlourAndYeastMasses {
+  yeastGrams: number
+  totalFlourGrams: number
+  sourdoughFlourGrams: number
+  sourdoughWaterGrams: number
+}
+
+interface SourdoughSplit {
+  flourGrams: number
+  waterGrams: number
+}
+
+function calculateSourdoughSplit(
+  yeastType: YeastType,
+  yeastGrams: number
+): SourdoughSplit | null {
+  if (yeastType === 'LMS') {
+    return { flourGrams: yeastGrams * 2 / 3, waterGrams: yeastGrams / 3 }
+  }
+  if (yeastType === 'LML') {
+    return { flourGrams: yeastGrams / 2, waterGrams: yeastGrams / 2 }
+  }
+  return null
+}
+
+function calculateTegliaYeastGrams(
+  adjustmentFactor: number,
+  totalFlourGrams: number,
+  hydrationPercent: number,
+  yeastRate: number
+): number {
+  return adjustmentFactor * 2.2 * 1.8 * totalFlourGrams ** -0.1
+    * ((totalFlourGrams * hydrationPercent / 100) * yeastRate / 100)
+}
+
+function calculateFlourAndYeastMasses(
+  input: DoughRecipeInput,
+  newDoughMassGrams: number,
+  yeastRate: number,
+  percents: IngredientPercents,
+  hasYeastPreferment: boolean
+): FlourAndYeastMasses {
+  const { hydrationPercent, saltPercent, fatPercent } = percents
+  const initialFlourGrams = newDoughMassGrams
+    / (1 + (hydrationPercent + saltPercent + fatPercent + yeastRate) / 100)
+
+  const adjustmentFactor = 1 + input.yeast.adjustmentPercent / 100
+  const styleFactor = input.style === 'Verace' ? 0.9 : 2.2
+  const estimatedYeastGrams = adjustmentFactor * styleFactor * 1.8 * initialFlourGrams ** -0.1
+    * (initialFlourGrams * yeastRate / 100)
+  const yeastGrams = hasYeastPreferment ? estimatedYeastGrams / 2 : estimatedYeastGrams
+
+  const yeastPercent = 100 * yeastGrams / initialFlourGrams
+  const resolvedFlourGrams = newDoughMassGrams
+    / (1 + (hydrationPercent + saltPercent + fatPercent + yeastPercent) / 100)
+  const finalYeastGrams = input.style === 'Teglia'
+    ? calculateTegliaYeastGrams(adjustmentFactor, resolvedFlourGrams, hydrationPercent, yeastRate)
+    : yeastGrams
+
+  const sourdough = calculateSourdoughSplit(input.yeast.type, finalYeastGrams)
+  let totalFlourGrams = resolvedFlourGrams
   let sourdoughFlourGrams = 0
   let sourdoughWaterGrams = 0
-  if (yeast.type === 'LMS' || yeast.type === 'LML') {
-    sourdoughFlourGrams = yeast.type === 'LMS' ? yeastGrams * 2 / 3 : yeastGrams / 2
-    sourdoughWaterGrams = yeast.type === 'LMS' ? yeastGrams / 3 : yeastGrams / 2
-    totalFlourGrams = newDoughMassGrams / (1 + (hydrationPercent + saltPercent + fatPercent) / 100)
+  if (sourdough !== null) {
+    sourdoughFlourGrams = sourdough.flourGrams
+    sourdoughWaterGrams = sourdough.waterGrams
+    totalFlourGrams = newDoughMassGrams
+      / (1 + (hydrationPercent + saltPercent + fatPercent) / 100)
       - sourdoughFlourGrams
   }
 
-  const baseWaterGrams = (totalFlourGrams + sourdoughFlourGrams) * hydrationPercent / 100
-    - sourdoughWaterGrams
-  const saltGrams = (totalFlourGrams + sourdoughFlourGrams) * saltPercent / 100
-  const fatGrams = (totalFlourGrams + sourdoughFlourGrams) * fatPercent / 100
+  return {
+    yeastGrams: finalYeastGrams,
+    totalFlourGrams,
+    sourdoughFlourGrams,
+    sourdoughWaterGrams
+  }
+}
 
+function calculatePrefermentMasses(
+  preferments: DoughRecipeInput['preferments'],
+  totalFlourGrams: number,
+  yeastType: YeastType
+): DoughRecipeResult['preferments'] {
   const autolysisFlourGrams = preferments.autolysisEnabled
     ? totalFlourGrams * preferments.autolysisFlourPercent / 100
     : 0
@@ -147,80 +228,178 @@ export function calculateDoughRecipe(input: DoughRecipeInput): DoughRecipeResult
   const poolishFlourGrams = preferments.poolishEnabled
     ? totalFlourGrams * preferments.poolishFlourPercent / 100
     : 0
-  const poolishWaterGrams = poolishFlourGrams
   const poolishYeastGrams = preferments.poolishEnabled
     ? poolishFlourGrams * 3.9 * Math.exp(-0.23 * preferments.poolishHours) / 100
-      * prefermentYeastFactor(yeast.type)
+      * prefermentYeastFactor(yeastType)
     : 0
   const bigaFlourGrams = preferments.bigaEnabled
     ? totalFlourGrams * preferments.bigaFlourPercent / 100
     : 0
-  const bigaWaterGrams = bigaFlourGrams * 0.45
   const bigaYeastGrams = preferments.bigaEnabled
-    ? bigaFlourGrams / 100 * prefermentYeastFactor(yeast.type)
+    ? bigaFlourGrams / 100 * prefermentYeastFactor(yeastType)
     : 0
-  const allocatedYeast = poolishYeastGrams + bigaYeastGrams
-  const yeastAfterAllocation = yeastGrams - allocatedYeast
-  const mainDoughYeastGrams = Math.max(0, yeastAfterAllocation)
-  const mainDoughFlourGrams = totalFlourGrams
-    - autolysisFlourGrams
-    - poolishFlourGrams
-    - bigaFlourGrams
-  const mainDoughWaterGrams = baseWaterGrams
-    - autolysisWaterGrams
-    - poolishWaterGrams
-    - bigaWaterGrams
 
-  const warnings: DoughRecipeWarning[] = []
+  return {
+    autolysis: { flourGrams: autolysisFlourGrams, waterGrams: autolysisWaterGrams },
+    poolish: {
+      flourGrams: poolishFlourGrams,
+      waterGrams: poolishFlourGrams,
+      yeastGrams: poolishYeastGrams
+    },
+    biga: {
+      flourGrams: bigaFlourGrams,
+      waterGrams: bigaFlourGrams * 0.45,
+      yeastGrams: bigaYeastGrams
+    }
+  }
+}
+
+interface DoughAllocation {
+  mainDough: DoughRecipeResult['mainDough']
+  yeastAfterAllocationGrams: number
+}
+
+function calculateMainDoughAllocation(
+  flourAndYeast: FlourAndYeastMasses,
+  preferments: DoughRecipeResult['preferments'],
+  percents: IngredientPercents
+): DoughAllocation {
+  const totalFlourWithSourdough = flourAndYeast.totalFlourGrams + flourAndYeast.sourdoughFlourGrams
+  const baseWaterGrams = totalFlourWithSourdough * percents.hydrationPercent / 100
+    - flourAndYeast.sourdoughWaterGrams
+  const saltGrams = totalFlourWithSourdough * percents.saltPercent / 100
+  const fatGrams = totalFlourWithSourdough * percents.fatPercent / 100
+  const allocatedYeastGrams = preferments.poolish.yeastGrams + preferments.biga.yeastGrams
+  const yeastAfterAllocationGrams = flourAndYeast.yeastGrams - allocatedYeastGrams
+
+  return {
+    mainDough: {
+      flourGrams: flourAndYeast.totalFlourGrams
+        - preferments.autolysis.flourGrams
+        - preferments.poolish.flourGrams
+        - preferments.biga.flourGrams,
+      waterGrams: baseWaterGrams
+        - preferments.autolysis.waterGrams
+        - preferments.poolish.waterGrams
+        - preferments.biga.waterGrams,
+      saltGrams,
+      fatGrams,
+      yeastGrams: Math.max(0, yeastAfterAllocationGrams)
+    },
+    yeastAfterAllocationGrams
+  }
+}
+
+function calculateFlourMix(
+  ingredients: DoughRecipeInput['ingredients'],
+  mainDoughFlourGrams: number
+): DoughRecipeResult['flourMix'] {
   const activeShares = ingredients.flourShares.slice(0, ingredients.flourCount)
   const shareTotal = activeShares.reduce((total, share) => total + share, 0)
-  const flourMix = ingredients.flourCount === 1
-    ? { status: 'single' as const, flourGrams: [mainDoughFlourGrams] }
-    : shareTotal === 100
-      ? {
-          status: 'valid' as const,
-          flourGrams: activeShares.map(share => mainDoughFlourGrams * share / 100)
-        }
-      : {
-          status: 'invalid' as const,
-          flourGrams: Array.from({ length: ingredients.flourCount }, () => null)
-        }
-  if (flourMix.status === 'invalid') warnings.push('invalid-flour-share-total')
 
-  const allocationExceeded = preferments.autolysisEnabled && (
-    (preferments.poolishEnabled
-      && preferments.autolysisFlourPercent + preferments.poolishFlourPercent > 100)
-    || (preferments.bigaEnabled
-      && preferments.autolysisFlourPercent + preferments.bigaFlourPercent > 100)
-  ) || mainDoughWaterGrams < 0 || totalFlourGrams < 0
-  if (allocationExceeded) warnings.push('preferment-allocation-exceeded')
+  if (ingredients.flourCount === 1) {
+    return { status: 'single', flourGrams: [mainDoughFlourGrams] }
+  }
+  if (shareTotal === 100) {
+    return {
+      status: 'valid',
+      flourGrams: activeShares.map(share => mainDoughFlourGrams * share / 100)
+    }
+  }
+  return {
+    status: 'invalid',
+    flourGrams: Array.from({ length: ingredients.flourCount }, () => null)
+  }
+}
 
-  if (hasYeastPreferment && yeastAfterAllocation < 0.25 * yeastGrams) {
+interface WarningContext {
+  flourMix: DoughRecipeResult['flourMix']
+  preferments: DoughRecipeInput['preferments']
+  mainDoughWaterGrams: number
+  totalFlourGrams: number
+  hasYeastPreferment: boolean
+  yeastGrams: number
+  yeastAfterAllocationGrams: number
+}
+
+function isPrefermentAllocationExceeded(
+  preferments: DoughRecipeInput['preferments'],
+  mainDoughWaterGrams: number,
+  totalFlourGrams: number
+): boolean {
+  const autolysisAndPoolishExceed = preferments.autolysisEnabled
+    && preferments.poolishEnabled
+    && preferments.autolysisFlourPercent + preferments.poolishFlourPercent > 100
+  const autolysisAndBigaExceed = preferments.autolysisEnabled
+    && preferments.bigaEnabled
+    && preferments.autolysisFlourPercent + preferments.bigaFlourPercent > 100
+
+  return autolysisAndPoolishExceed
+    || autolysisAndBigaExceed
+    || mainDoughWaterGrams < 0
+    || totalFlourGrams < 0
+}
+
+function collectWarnings(context: WarningContext): DoughRecipeWarning[] {
+  const warnings: DoughRecipeWarning[] = []
+
+  if (context.flourMix.status === 'invalid') {
+    warnings.push('invalid-flour-share-total')
+  }
+  if (isPrefermentAllocationExceeded(
+    context.preferments,
+    context.mainDoughWaterGrams,
+    context.totalFlourGrams
+  )) {
+    warnings.push('preferment-allocation-exceeded')
+  }
+  if (
+    context.hasYeastPreferment
+    && context.yeastAfterAllocationGrams < 0.25 * context.yeastGrams
+  ) {
     warnings.push('excessive-leavening')
   }
 
+  return warnings
+}
+
+export function calculateDoughRecipe(input: DoughRecipeInput): DoughRecipeResult {
+  const targetMasses = calculateTargetMasses(input.target)
+  const percents = resolveIngredientPercents(input.ingredients)
+  const hasYeastPreferment = input.preferments.poolishEnabled || input.preferments.bigaEnabled
+  const yeastRate = calculateYeastRate(input, targetMasses.oldDoughInPercent)
+  const flourAndYeast = calculateFlourAndYeastMasses(
+    input,
+    targetMasses.newDoughMassGrams,
+    yeastRate,
+    percents,
+    hasYeastPreferment
+  )
+  const prefermentMasses = calculatePrefermentMasses(
+    input.preferments,
+    flourAndYeast.totalFlourGrams,
+    input.yeast.type
+  )
+  const allocation = calculateMainDoughAllocation(flourAndYeast, prefermentMasses, percents)
+  const flourMix = calculateFlourMix(input.ingredients, allocation.mainDough.flourGrams)
+  const warnings = collectWarnings({
+    flourMix,
+    preferments: input.preferments,
+    mainDoughWaterGrams: allocation.mainDough.waterGrams,
+    totalFlourGrams: flourAndYeast.totalFlourGrams,
+    hasYeastPreferment,
+    yeastGrams: flourAndYeast.yeastGrams,
+    yeastAfterAllocationGrams: allocation.yeastAfterAllocationGrams
+  })
+
   return {
-    targetMassGrams,
-    oldDoughInMassGrams,
-    oldDoughOutMassGrams: target.oldDoughOutGrams,
-    newDoughMassGrams,
-    totalFlourGrams,
-    mainDough: {
-      flourGrams: mainDoughFlourGrams,
-      waterGrams: mainDoughWaterGrams,
-      saltGrams,
-      fatGrams,
-      yeastGrams: mainDoughYeastGrams
-    },
-    preferments: {
-      autolysis: { flourGrams: autolysisFlourGrams, waterGrams: autolysisWaterGrams },
-      poolish: {
-        flourGrams: poolishFlourGrams,
-        waterGrams: poolishWaterGrams,
-        yeastGrams: poolishYeastGrams
-      },
-      biga: { flourGrams: bigaFlourGrams, waterGrams: bigaWaterGrams, yeastGrams: bigaYeastGrams }
-    },
+    targetMassGrams: targetMasses.targetMassGrams,
+    oldDoughInMassGrams: targetMasses.oldDoughInMassGrams,
+    oldDoughOutMassGrams: input.target.oldDoughOutGrams,
+    newDoughMassGrams: targetMasses.newDoughMassGrams,
+    totalFlourGrams: flourAndYeast.totalFlourGrams,
+    mainDough: allocation.mainDough,
+    preferments: prefermentMasses,
     flourMix,
     warnings
   }
