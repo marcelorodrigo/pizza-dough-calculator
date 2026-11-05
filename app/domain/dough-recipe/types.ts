@@ -1,4 +1,4 @@
-export type DoughStyle = 'Verace' | 'Teglia'
+export type DoughStyle = 'Neapolitan' | 'Teglia'
 export type YeastType = 'LBF' | 'LSI' | 'LSA' | 'LMS' | 'LML'
 export type TemperatureUnit = 'C' | 'F'
 export type OldDoughStrength = 'low' | 'high'

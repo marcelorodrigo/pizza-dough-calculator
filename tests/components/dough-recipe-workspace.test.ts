@@ -47,4 +47,23 @@ describe('DoughRecipeWorkspace', () => {
 
     wrapper.unmount()
   })
+
+  it('offers Neapolitan as the default dough style', async () => {
+    const store: CalculatorStateStore = {
+      load: vi.fn(() => null),
+      save: vi.fn()
+    }
+    vi.stubGlobal('useNuxtApp', () => ({ $calculatorStateStore: store }))
+    const wrapper = mount(DoughRecipeWorkspace)
+    await nextTick()
+
+    const styleLabel = wrapper.findAll('label.select-field')
+      .find(label => label.text().includes('Dough style'))!
+    const options = styleLabel.findAll('option')
+
+    expect(options.map(option => option.attributes('value'))).toEqual(['Neapolitan', 'Teglia'])
+    expect((styleLabel.get('select').element as HTMLSelectElement).value).toBe('Neapolitan')
+
+    wrapper.unmount()
+  })
 })

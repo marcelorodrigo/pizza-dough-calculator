@@ -30,10 +30,10 @@ describe('dough recipe state transitions', () => {
     expect(() => togglePreferment(input, 'poolish')).not.toThrow()
   })
 
-  it('starts with the documented clean Verace defaults', () => {
+  it('starts with the documented clean Neapolitan defaults', () => {
     const input = createDefaultDoughRecipeInput()
 
-    expect(input.style).toBe('Verace')
+    expect(input.style).toBe('Neapolitan')
     expect(input.target.firstBallCount).toBe(1)
     expect(input.target.firstBallWeightGrams).toBe(250)
     expect(input.ingredients.hydrationPercent).toBe(60)

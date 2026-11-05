@@ -141,11 +141,11 @@ export function normalizeDisabledDoughRecipeFields(input: DoughRecipeInput): Dou
 export function applyDoughStyle(input: DoughRecipeInput, style: DoughStyle): DoughRecipeInput {
   const next = copyInput(input)
   next.style = style
-  next.target.firstBallWeightGrams = style === 'Verace' ? 250 : 600
-  next.target.secondBallWeightGrams = style === 'Verace' ? 200 : 400
-  next.ingredients.hydrationPercent = style === 'Verace' ? 60 : 80
-  next.ingredients.saltPercent = style === 'Verace' ? 3 : 2.5
-  next.fermentation.roomHours = style === 'Verace' ? 8 : 5
+  next.target.firstBallWeightGrams = style === 'Neapolitan' ? 250 : 600
+  next.target.secondBallWeightGrams = style === 'Neapolitan' ? 200 : 400
+  next.ingredients.hydrationPercent = style === 'Neapolitan' ? 60 : 80
+  next.ingredients.saltPercent = style === 'Neapolitan' ? 3 : 2.5
+  next.fermentation.roomHours = style === 'Neapolitan' ? 8 : 5
   next.fermentation.roomTemperature = convertTemperature(
     20,
     'C',

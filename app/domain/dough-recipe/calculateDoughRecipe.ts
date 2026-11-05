@@ -182,7 +182,7 @@ function calculateFlourAndYeastMasses(
     / (1 + (hydrationPercent + saltPercent + fatPercent + yeastRate) / 100)
 
   const adjustmentFactor = 1 + input.yeast.adjustmentPercent / 100
-  const styleFactor = input.style === 'Verace' ? 0.9 : 2.2
+  const styleFactor = input.style === 'Neapolitan' ? 0.9 : 2.2
   const estimatedYeastGrams = adjustmentFactor * styleFactor * 1.8 * initialFlourGrams ** -0.1
     * (initialFlourGrams * yeastRate / 100)
   const yeastGrams = hasYeastPreferment ? estimatedYeastGrams / 2 : estimatedYeastGrams

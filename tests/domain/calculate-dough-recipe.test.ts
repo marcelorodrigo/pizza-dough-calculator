@@ -5,7 +5,7 @@ import { applyDoughStyle } from '../../app/domain/dough-recipe/transitions'
 import { validateDoughRecipeInput } from '../../app/domain/dough-recipe/validation'
 
 describe('calculateDoughRecipe', () => {
-  it('calculates the documented default Verace recipe without rounding intermediates', () => {
+  it('calculates the documented default Neapolitan recipe without rounding intermediates', () => {
     const result = calculateDoughRecipe(createDefaultDoughRecipeInput())
 
     expect(result.targetMassGrams).toBe(250)

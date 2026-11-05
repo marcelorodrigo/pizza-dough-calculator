@@ -31,7 +31,7 @@ function update<K extends keyof DoughRecipeInput['target']>(
       <label class="select-field">
         <span>Dough style</span>
         <select :value="style" @change="$emit('update:style', ($event.target as HTMLSelectElement).value as DoughStyle)">
-          <option value="Verace">Verace</option>
+          <option value="Neapolitan">Neapolitan</option>
           <option value="Teglia">Teglia</option>
         </select>
       </label>
