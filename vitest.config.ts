@@ -5,6 +5,7 @@ export default defineConfig({
   plugins: [vue()],
   test: {
     environment: 'happy-dom',
+    pool: 'vmThreads',
     include: ['tests/**/*.test.ts'],
     coverage: {
       provider: 'v8',
