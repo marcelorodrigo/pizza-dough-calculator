@@ -182,7 +182,7 @@ function calculateFlourAndYeastMasses(
     / (1 + (hydrationPercent + saltPercent + fatPercent + yeastRate) / 100)
 
   const adjustmentFactor = 1 + input.yeast.adjustmentPercent / 100
-  const styleFactor = input.style === 'Neapolitan' ? 0.9 : 2.2
+  const styleFactor = input.style === 'neapolitan' ? 0.9 : 2.2
   const estimatedYeastGrams = adjustmentFactor * styleFactor * 1.8 * initialFlourGrams ** -0.1
     * (initialFlourGrams * yeastRate / 100)
   const yeastGrams = hasYeastPreferment ? estimatedYeastGrams / 2 : estimatedYeastGrams
@@ -190,7 +190,7 @@ function calculateFlourAndYeastMasses(
   const yeastPercent = 100 * yeastGrams / initialFlourGrams
   const resolvedFlourGrams = newDoughMassGrams
     / (1 + (hydrationPercent + saltPercent + fatPercent + yeastPercent) / 100)
-  const finalYeastGrams = input.style === 'Pan Pizza'
+  const finalYeastGrams = input.style === 'pan-pizza'
     ? calculatePanPizzaYeastGrams(adjustmentFactor, resolvedFlourGrams, hydrationPercent, yeastRate)
     : yeastGrams
 

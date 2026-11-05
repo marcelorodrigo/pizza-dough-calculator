@@ -1,11 +1,11 @@
-export type DoughStyle = 'Neapolitan' | 'Pan Pizza'
+export type DoughStyleId = 'neapolitan' | 'pan-pizza'
 export type YeastType = 'LBF' | 'LSI' | 'LSA' | 'LMS' | 'LML'
 export type TemperatureUnit = 'C' | 'F'
 export type OldDoughStrength = 'low' | 'high'
 export type PrefermentType = 'poolish' | 'biga'
 
 export interface DoughRecipeInput {
-  style: DoughStyle
+  style: DoughStyleId
   target: {
     firstBallCount: number
     firstBallWeightGrams: number

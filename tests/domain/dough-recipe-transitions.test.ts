@@ -25,7 +25,7 @@ describe('dough recipe state transitions', () => {
     expect(input.ingredients.flourSharesByCount['2']).toBeUndefined()
     expect(result.ingredients.flourShares).toEqual([55, 1])
     expect(result.ingredients.flourSharesByCount['2']).toEqual([66, 1])
-    expect(() => applyDoughStyle(input, 'Pan Pizza')).not.toThrow()
+    expect(() => applyDoughStyle(input, 'pan-pizza')).not.toThrow()
     expect(() => setTemperatureUnit(input, 'F')).not.toThrow()
     expect(() => togglePreferment(input, 'poolish')).not.toThrow()
   })
@@ -33,7 +33,7 @@ describe('dough recipe state transitions', () => {
   it('starts with the documented clean Neapolitan defaults', () => {
     const input = createDefaultDoughRecipeInput()
 
-    expect(input.style).toBe('Neapolitan')
+    expect(input.style).toBe('neapolitan')
     expect(input.target.firstBallCount).toBe(1)
     expect(input.target.firstBallWeightGrams).toBe(250)
     expect(input.ingredients.hydrationPercent).toBe(60)
@@ -49,7 +49,7 @@ describe('dough recipe state transitions', () => {
     input.preferments.bigaEnabled = true
     input.target.oldDoughInEnabled = true
 
-    const result = applyDoughStyle(input, 'Pan Pizza')
+    const result = applyDoughStyle(input, 'pan-pizza')
 
     expect(result.target.firstBallWeightGrams).toBe(600)
     expect(result.target.secondBallWeightGrams).toBe(400)
@@ -80,7 +80,7 @@ describe('dough recipe state transitions', () => {
   it('keeps style defaults at the same physical temperature when Fahrenheit is selected', () => {
     const fahrenheit = setTemperatureUnit(createDefaultDoughRecipeInput(), 'F')
 
-    const result = applyDoughStyle(fahrenheit, 'Pan Pizza')
+    const result = applyDoughStyle(fahrenheit, 'pan-pizza')
 
     expect(result.fermentation.temperatureUnit).toBe('F')
     expect(result.fermentation.roomTemperature).toBe(68)
@@ -100,7 +100,7 @@ describe('dough recipe state transitions', () => {
     invalidBiga.preferments.bigaEnabled = true
     invalidBiga.preferments.bigaFlourPercent = Number.NaN
 
-    const panPizza = applyDoughStyle(invalidBiga, 'Pan Pizza')
+    const panPizza = applyDoughStyle(invalidBiga, 'pan-pizza')
 
     expect(panPizza.preferments.bigaEnabled).toBe(false)
     expect(panPizza.preferments.bigaFlourPercent).toBe(30)

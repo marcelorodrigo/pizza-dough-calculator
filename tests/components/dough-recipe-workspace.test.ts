@@ -61,8 +61,9 @@ describe('DoughRecipeWorkspace', () => {
       .find(label => label.text().includes('Dough style'))!
     const options = styleLabel.findAll('option')
 
-    expect(options.map(option => option.attributes('value'))).toEqual(['Neapolitan', 'Pan Pizza'])
-    expect((styleLabel.get('select').element as HTMLSelectElement).value).toBe('Neapolitan')
+    expect(options.map(option => option.attributes('value'))).toEqual(['neapolitan', 'pan-pizza'])
+    expect(options.map(option => option.text())).toEqual(['Neapolitan', 'Pan Pizza'])
+    expect((styleLabel.get('select').element as HTMLSelectElement).value).toBe('neapolitan')
 
     wrapper.unmount()
   })

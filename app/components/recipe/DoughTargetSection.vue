@@ -1,16 +1,21 @@
 <script setup lang="ts">
 import NumberField from '../form/NumberField.vue'
-import type { DoughRecipeInput, DoughStyle } from '../../domain/dough-recipe/types'
+import type { DoughRecipeInput, DoughStyleId } from '../../domain/dough-recipe/types'
 import type { DoughRecipeFieldErrors } from '../../domain/dough-recipe/validation'
+
+const styleOptions = [
+  { id: 'neapolitan', label: 'Neapolitan' },
+  { id: 'pan-pizza', label: 'Pan Pizza' }
+] as const satisfies ReadonlyArray<{ id: DoughStyleId; label: string }>
 
 const props = defineProps<{
   modelValue: DoughRecipeInput['target']
-  style: DoughStyle
+  style: DoughStyleId
   errors: DoughRecipeFieldErrors
 }>()
 const emit = defineEmits<{
   'update:modelValue': [value: DoughRecipeInput['target']]
-  'update:style': [value: DoughStyle]
+  'update:style': [value: DoughStyleId]
 }>()
 
 function update<K extends keyof DoughRecipeInput['target']>(
@@ -30,9 +35,10 @@ function update<K extends keyof DoughRecipeInput['target']>(
     <div class="field-grid field-grid--two">
       <label class="select-field">
         <span>Dough style</span>
-        <select :value="style" @change="$emit('update:style', ($event.target as HTMLSelectElement).value as DoughStyle)">
-          <option value="Neapolitan">Neapolitan</option>
-          <option value="Pan Pizza">Pan Pizza</option>
+        <select :value="style" @change="$emit('update:style', ($event.target as HTMLSelectElement).value as DoughStyleId)">
+          <option v-for="option in styleOptions" :key="option.id" :value="option.id">
+            {{ option.label }}
+          </option>
         </select>
       </label>
       <NumberField

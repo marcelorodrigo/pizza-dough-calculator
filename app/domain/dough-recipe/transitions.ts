@@ -1,4 +1,4 @@
-import type { DoughRecipeInput, DoughStyle, PrefermentType, TemperatureUnit } from './types'
+import type { DoughRecipeInput, DoughStyleId, PrefermentType, TemperatureUnit } from './types'
 import { isValidFlourShare } from './persistence'
 import { createDefaultDoughRecipeInput } from './defaults'
 import { validateDoughRecipeInput } from './validation'
@@ -138,14 +138,14 @@ export function normalizeDisabledDoughRecipeFields(input: DoughRecipeInput): Dou
   return next
 }
 
-export function applyDoughStyle(input: DoughRecipeInput, style: DoughStyle): DoughRecipeInput {
+export function applyDoughStyle(input: DoughRecipeInput, style: DoughStyleId): DoughRecipeInput {
   const next = copyInput(input)
   next.style = style
-  next.target.firstBallWeightGrams = style === 'Neapolitan' ? 250 : 600
-  next.target.secondBallWeightGrams = style === 'Neapolitan' ? 200 : 400
-  next.ingredients.hydrationPercent = style === 'Neapolitan' ? 60 : 80
-  next.ingredients.saltPercent = style === 'Neapolitan' ? 3 : 2.5
-  next.fermentation.roomHours = style === 'Neapolitan' ? 8 : 5
+  next.target.firstBallWeightGrams = style === 'neapolitan' ? 250 : 600
+  next.target.secondBallWeightGrams = style === 'neapolitan' ? 200 : 400
+  next.ingredients.hydrationPercent = style === 'neapolitan' ? 60 : 80
+  next.ingredients.saltPercent = style === 'neapolitan' ? 3 : 2.5
+  next.fermentation.roomHours = style === 'neapolitan' ? 8 : 5
   next.fermentation.roomTemperature = convertTemperature(
     20,
     'C',
@@ -157,9 +157,9 @@ export function applyDoughStyle(input: DoughRecipeInput, style: DoughStyle): Dou
     'C',
     next.fermentation.temperatureUnit
   )
-  next.fermentation.controlledEnabled = style === 'Pan Pizza'
-  next.ingredients.fatEnabled = style === 'Pan Pizza'
-  if (style === 'Pan Pizza') next.ingredients.fatPercent = 2.5
+  next.fermentation.controlledEnabled = style === 'pan-pizza'
+  next.ingredients.fatEnabled = style === 'pan-pizza'
+  if (style === 'pan-pizza') next.ingredients.fatPercent = 2.5
   next.preferments.poolishEnabled = false
   next.preferments.bigaEnabled = false
   return normalizeDisabledDoughRecipeFields(next)

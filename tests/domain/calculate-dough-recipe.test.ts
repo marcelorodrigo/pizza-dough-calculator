@@ -90,7 +90,7 @@ describe('calculateDoughRecipe', () => {
 
   it('warns when sourdough flour exceeds the available recipe flour', () => {
     const input = createDefaultDoughRecipeInput()
-    input.style = 'Pan Pizza'
+    input.style = 'pan-pizza'
     input.target.firstBallWeightGrams = 15
     input.ingredients.hydrationPercent = 100
     input.ingredients.saltPercent = 6
@@ -137,7 +137,7 @@ describe('calculateDoughRecipe', () => {
   })
 
   it('uses the Pan Pizza water-mass yeast expression after resolving flour', () => {
-    const input = applyDoughStyle(createDefaultDoughRecipeInput(), 'Pan Pizza')
+    const input = applyDoughStyle(createDefaultDoughRecipeInput(), 'pan-pizza')
 
     const result = calculateDoughRecipe(input)
 
