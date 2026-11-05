@@ -16,6 +16,39 @@ describe('calculateDoughRecipe', () => {
     expect(result.flourMix).toEqual({ status: 'single', flourGrams: [result.totalFlourGrams] })
   })
 
+  it('composes the target mass from both ball groups, wastage, and old dough out', () => {
+    const input = createDefaultDoughRecipeInput()
+    input.target.firstBallCount = 2
+    input.target.firstBallWeightGrams = 250
+    input.target.secondGroupEnabled = true
+    input.target.secondBallCount = 1
+    input.target.secondBallWeightGrams = 200
+    input.target.wastagePercent = 5
+    input.target.oldDoughOutGrams = 100
+    input.target.oldDoughInEnabled = true
+    input.target.oldDoughInPercent = 10
+
+    const result = calculateDoughRecipe(input)
+
+    expect(result.targetMassGrams).toBeCloseTo(840, 10)
+    expect(result.oldDoughInMassGrams).toBeCloseTo(84, 10)
+    expect(result.newDoughMassGrams).toBeCloseTo(756, 10)
+    expect(result.oldDoughOutMassGrams).toBe(100)
+  })
+
+  it('splits the main dough flour across a valid multi-flour mix', () => {
+    const input = createDefaultDoughRecipeInput()
+    input.ingredients.flourCount = 2
+    input.ingredients.flourShares = [60, 40]
+
+    const result = calculateDoughRecipe(input)
+
+    expect(result.flourMix.status).toBe('valid')
+    expect(result.flourMix.flourGrams[0]!).toBeCloseTo(result.mainDough.flourGrams * 0.6, 10)
+    expect(result.flourMix.flourGrams[1]!).toBeCloseTo(result.mainDough.flourGrams * 0.4, 10)
+    expect(result.warnings).not.toContain('invalid-flour-share-total')
+  })
+
   it('keeps other results available when an active flour mix does not total 100%', () => {
     const input = createDefaultDoughRecipeInput()
     input.ingredients.flourCount = 2
