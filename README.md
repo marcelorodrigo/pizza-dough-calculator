@@ -1,5 +1,11 @@
 # Dough Notes
 
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=marcelorodrigo_pizza-dough-calculator&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=marcelorodrigo_pizza-dough-calculator)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=marcelorodrigo_pizza-dough-calculator&metric=coverage)](https://sonarcloud.io/summary/new_code?id=marcelorodrigo_pizza-dough-calculator)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=marcelorodrigo_pizza-dough-calculator&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=marcelorodrigo_pizza-dough-calculator)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=marcelorodrigo_pizza-dough-calculator&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=marcelorodrigo_pizza-dough-calculator)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=marcelorodrigo_pizza-dough-calculator&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=marcelorodrigo_pizza-dough-calculator)
+
 A phone-first pizza dough calculator with recipe planning, flour-strength blending, tin-mass estimates, and water-temperature guidance. Calculations run in the browser, and the latest inputs for each calculator are saved locally on the device.
 
 ## Development
