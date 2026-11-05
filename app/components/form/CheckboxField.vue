@@ -14,9 +14,10 @@ const inputId = computed(() => props.id ?? generatedId)
 </script>
 
 <template>
-  <label class="check-control" :for="inputId">
+  <label class="check-control flex min-h-[24px] items-center gap-[12px] text-[12px] font-semibold text-[#514a41]" :for="inputId">
     <input
       :id="inputId"
+      class="h-[16px] w-[16px] accent-clay"
       type="checkbox"
       :checked="model"
       :disabled="disabled"

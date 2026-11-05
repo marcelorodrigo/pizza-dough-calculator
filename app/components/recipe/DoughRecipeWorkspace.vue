@@ -88,8 +88,8 @@ function changePreferment(preferment: 'autolysis' | PrefermentType) {
 </script>
 
 <template>
-  <div class="workspace-grid">
-    <div class="form-stack">
+  <div class="grid grid-cols-[minmax(0,1.55fr)_minmax(290px,0.85fr)] items-start gap-[20px] below-960:grid-cols-[minmax(0,1.25fr)_minmax(275px,0.85fr)] below-720:grid-cols-[minmax(0,1fr)] below-720:gap-[15px]">
+    <div class="grid gap-[16px]">
       <DoughTargetSection
         :model-value="recipe.target"
         :style="recipe.style"

@@ -51,7 +51,7 @@ function blendShare(value: number | undefined): string {
 </script>
 
 <template>
-  <div class="calculator-sections">
+  <div class="grid grid-cols-2 items-start gap-[16px] below-720:grid-cols-1">
     <SectionCard
       heading-id="blend-heading"
       eyebrow="Blend two flours"
@@ -60,7 +60,7 @@ function blendShare(value: number | undefined): string {
       variant="tool"
       copy="Find the proportions of two flours needed to hit your target strength."
     >
-      <div class="field-grid field-grid--three">
+      <div class="grid grid-cols-3 gap-[14px] below-720:grid-cols-2 below-420:grid-cols-1">
         <NumberField
           id="target-w"
           label="Target W" :model-value="model.blend.targetW" :min="100" :max="500" :step="10"
@@ -80,9 +80,9 @@ function blendShare(value: number | undefined): string {
           @update:model-value="updateBlend('flour2W', $event)"
         />
       </div>
-      <div class="result-strip" aria-live="polite">
-        <div><span>Flour 1 share</span><output aria-label="Flour 1 share">{{ flour1ShareDisplay }}</output></div>
-        <div><span>Flour 2 share</span><output aria-label="Flour 2 share">{{ flour2ShareDisplay }}</output></div>
+      <div class="mt-[19px] grid grid-cols-2 rounded-[10px] border border-[#e9e0d3] bg-[#faf6ee]" aria-live="polite">
+        <div class="flex items-center justify-between gap-[12px] px-[15px] py-[13px] below-420:p-[11px]"><span class="text-[12px] text-[#71685c]">Flour 1 share</span><output class="font-mono text-[19px] font-medium text-olive" aria-label="Flour 1 share">{{ flour1ShareDisplay }}</output></div>
+        <div class="flex items-center justify-between gap-[12px] border-l border-[#e9e0d3] px-[15px] py-[13px] below-420:p-[11px]"><span class="text-[12px] text-[#71685c]">Flour 2 share</span><output class="font-mono text-[19px] font-medium text-olive" aria-label="Flour 2 share">{{ flour2ShareDisplay }}</output></div>
       </div>
     </SectionCard>
 
@@ -94,9 +94,9 @@ function blendShare(value: number | undefined): string {
       variant="tool"
       copy="Enter each flour’s percentage. Shares must add up to exactly 100%."
     >
-      <div class="field-grid flour-slots">
-        <div v-for="index in 4" :key="index" class="flour-slot">
-          <h3>Flour {{ index }}</h3>
+      <div class="grid grid-cols-4 gap-[14px] below-960:grid-cols-2 below-420:grid-cols-2">
+        <div v-for="index in 4" :key="index" class="grid content-start gap-[12px] rounded-[10px] border border-[#eee8de] bg-[#fdfbf6] p-[12px]">
+          <h3 class="m-0 font-mono text-[10px] font-normal uppercase text-[#8c7a68]">Flour {{ index }}</h3>
           <NumberField
             :label="`Flour ${index} share`"
             :id="`flour-${index}-share`"
@@ -115,8 +115,8 @@ function blendShare(value: number | undefined): string {
           />
         </div>
       </div>
-      <div class="result-strip result-strip--single" aria-live="polite">
-        <div><span>Weighted flour strength</span><output aria-label="Weighted flour strength">{{ weightedDisplay }}</output></div>
+      <div class="mt-[19px] grid grid-cols-1 rounded-[10px] border border-[#e9e0d3] bg-[#faf6ee]" aria-live="polite">
+        <div class="flex items-center justify-between gap-[12px] px-[15px] py-[13px] below-420:p-[11px]"><span class="text-[12px] text-[#71685c]">Weighted flour strength</span><output class="font-mono text-[19px] font-medium text-olive" aria-label="Weighted flour strength">{{ weightedDisplay }}</output></div>
       </div>
     </SectionCard>
   </div>
