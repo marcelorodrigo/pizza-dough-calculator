@@ -14,16 +14,21 @@ export function formatSaltMass(value: number): string {
   return `${fixed(value, value < 10 ? 1 : 0)} g`
 }
 
+function yeastDigitsWithPreferment(value: number): number {
+  return value <= 0.1 ? 3 : 2
+}
+
+function yeastDigitsWithoutPreferment(value: number): number {
+  if (value <= 0.1) return 3
+  if (value > 100) return 0
+  if (value > 10) return 1
+  return 2
+}
+
 export function formatYeastMass(value: number, hasYeastPreferment: boolean): string {
   const digits = hasYeastPreferment
-    ? (value <= 0.1 ? 3 : 2)
-    : value <= 0.1
-      ? 3
-      : value > 100
-        ? 0
-        : value > 10
-          ? 1
-          : 2
+    ? yeastDigitsWithPreferment(value)
+    : yeastDigitsWithoutPreferment(value)
   return `${fixed(value, digits)} g`
 }
 
