@@ -8,6 +8,7 @@ dist
 playwright-report
 test-results
 blob-report
+coverage
 
 # Node dependencies
 node_modules
