@@ -1,0 +1,152 @@
+name: Fork PR SonarQube Cloud
+
+on:
+  workflow_run:
+    workflows: [Fork PR Build]
+    types: [completed]
+
+permissions:
+  actions: read
+  contents: read
+  pull-requests: read
+
+jobs:
+  analyze:
+    if: github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download fork build artifact
+        uses: actions/download-artifact@v8
+        with:
+          name: fork-pr-analysis-${{ github.event.workflow_run.id }}
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          path: fork-pr-analysis
+
+      - name: Validate PR metadata against GitHub
+        id: validate
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          PR_EVENT_PATH: fork-pr-analysis/pr-event.json
+          WORKFLOW_HEAD_REPOSITORY: ${{ github.event.workflow_run.head_repository.full_name }}
+          WORKFLOW_HEAD_BRANCH: ${{ github.event.workflow_run.head_branch }}
+          WORKFLOW_RUN_HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          node <<'NODE'
+          const fs = require('node:fs')
+
+          const event = JSON.parse(fs.readFileSync(process.env.PR_EVENT_PATH, 'utf8'))
+          const pr = event.pull_request
+          const repository = process.env.GITHUB_REPOSITORY
+
+          if (!pr || !Number.isSafeInteger(pr.number) || pr.number <= 0) {
+            throw new Error('Artifact does not contain a valid pull request number')
+          }
+
+          const headSha = pr.head?.sha
+          const headRepository = pr.head?.repo?.full_name
+          const headBranch = pr.head?.ref
+          const baseBranch = pr.base?.ref
+          const workflowRunHeadSha = process.env.WORKFLOW_RUN_HEAD_SHA
+          if (!/^[0-9a-f]{40}$/i.test(headSha ?? '')) {
+            throw new Error('Artifact does not contain a valid PR head SHA')
+          }
+          if (!/^[0-9a-f]{40}$/i.test(workflowRunHeadSha ?? '')) {
+            throw new Error('Workflow run does not contain a valid head SHA')
+          }
+          if (!/^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/.test(headRepository ?? '') || headRepository === repository || headRepository !== process.env.WORKFLOW_HEAD_REPOSITORY) {
+            throw new Error('Artifact PR head repository does not match the fork workflow run')
+          }
+          if (pr.base?.repo?.full_name !== repository || baseBranch !== 'master') {
+            throw new Error('Artifact PR does not target this repository master branch')
+          }
+          if (!/^[A-Za-z0-9._/-]+$/.test(headBranch ?? '') || headBranch.includes('..') || headBranch.includes('//') || headBranch.startsWith('/') || headBranch.endsWith('/') || headBranch !== process.env.WORKFLOW_HEAD_BRANCH) {
+            throw new Error('PR branch contains unsupported characters')
+          }
+
+          async function validateCurrentPullRequest() {
+            if (workflowRunHeadSha !== headSha) {
+              const commitResponse = await fetch(`https://api.github.com/repos/${repository}/commits/${workflowRunHeadSha}`, {
+                headers: {
+                  Accept: 'application/vnd.github+json',
+                  Authorization: `Bearer ${process.env.GH_TOKEN}`,
+                  'X-GitHub-Api-Version': '2022-11-28'
+                }
+              })
+              if (!commitResponse.ok) throw new Error(`Workflow run commit lookup failed with status ${commitResponse.status}`)
+
+              const workflowRunCommit = await commitResponse.json()
+              if (!workflowRunCommit.parents?.some(({ sha }) => sha === headSha)) {
+                throw new Error('Artifact PR head SHA is not part of the commit checked by this workflow run')
+              }
+            }
+
+            const url = new URL(`https://api.github.com/repos/${repository}/pulls`)
+            url.searchParams.set('state', 'open')
+            url.searchParams.set('head', `${headRepository.split('/')[0]}:${headBranch}`)
+            url.searchParams.set('base', baseBranch)
+            url.searchParams.set('per_page', '100')
+
+            const response = await fetch(url, {
+              headers: {
+                Accept: 'application/vnd.github+json',
+                Authorization: `Bearer ${process.env.GH_TOKEN}`,
+                'X-GitHub-Api-Version': '2022-11-28'
+              }
+            })
+            if (!response.ok) throw new Error(`GitHub PR lookup failed with status ${response.status}`)
+
+            const currentPullRequests = await response.json()
+            const matchingPullRequests = currentPullRequests.filter((current) =>
+              current.head.sha === headSha &&
+              current.head.ref === headBranch &&
+              current.head.repo?.full_name === headRepository &&
+              current.base.ref === baseBranch &&
+              current.base.repo?.full_name === repository
+            )
+            if (matchingPullRequests.length !== 1 || matchingPullRequests[0].number !== pr.number) {
+              throw new Error('Artifact PR does not uniquely match the fork workflow run and its current open pull request')
+            }
+
+            fs.appendFileSync(process.env.GITHUB_OUTPUT, `pr_number=${pr.number}\npr_branch=${headBranch}\npr_base=${baseBranch}\nhead_sha=${headSha}\n`)
+          }
+
+          validateCurrentPullRequest().catch((error) => {
+            console.error(error)
+            process.exitCode = 1
+          })
+          NODE
+
+      - name: Checkout trusted Sonar configuration
+        uses: actions/checkout@v7
+        with:
+          ref: master
+          path: trusted-config
+          sparse-checkout: sonar-project.properties
+          sparse-checkout-cone-mode: false
+
+      - name: Checkout validated PR commit
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ steps.validate.outputs.head_sha }}
+          path: pr-source
+          persist-credentials: false
+
+      - name: Add trusted Sonar configuration and coverage
+        run: |
+          cp trusted-config/sonar-project.properties pr-source/sonar-project.properties
+          mkdir -p pr-source/coverage
+          cp fork-pr-analysis/coverage/lcov.info pr-source/coverage/lcov.info
+
+      - name: SonarQube Cloud scan
+        uses: SonarSource/sonarqube-scan-action@4d1dc0c91ee400dcf8a6dddf2f705ac36542e304 # v8.4.0
+        with:
+          projectBaseDir: pr-source
+          args: >-
+            -Dsonar.pullrequest.key=${{ steps.validate.outputs.pr_number }}
+            -Dsonar.pullrequest.branch=${{ steps.validate.outputs.pr_branch }}
+            -Dsonar.pullrequest.base=${{ steps.validate.outputs.pr_base }}
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
