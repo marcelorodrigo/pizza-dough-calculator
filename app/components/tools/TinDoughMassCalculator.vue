@@ -52,8 +52,8 @@ function updateRound<K extends keyof TinDoughMassCalculatorState['round']>(
         <NumberField id="rectangular-side-2" label="Side 2" unit="cm" :model-value="model.rectangular.side2Cm" :min="0" :max="100" :step="1" :error="errors['rectangular.side2Cm']" @update:model-value="updateRectangular('side2Cm', $event)" />
         <NumberField id="rectangular-adjustment" label="Adjustment" unit="%" :model-value="model.rectangular.adjustmentPercent" :min="-20" :max="20" :step="5" :error="errors['rectangular.adjustmentPercent']" @update:model-value="updateRectangular('adjustmentPercent', $event)" />
       </div>
-      <div class="mt-[19px] grid grid-cols-1 rounded-[10px] border border-[#e9e0d3] bg-[#faf6ee]" aria-live="polite">
-        <div class="flex items-center justify-between gap-[12px] px-[15px] py-[13px] below-420:p-[11px]"><span class="text-[12px] text-[#71685c]">Suggested dough mass</span><output class="font-mono text-[19px] font-medium text-olive" aria-label="Rectangular tin dough mass">{{ rectangularMass }}</output></div>
+      <div class="mt-[19px] grid grid-cols-1 rounded-[10px] border border-line-strong bg-surface-subtle" aria-live="polite">
+        <div class="flex items-center justify-between gap-[12px] px-[15px] py-[13px] below-420:p-[11px]"><span class="text-[12px] text-ink-secondary">Suggested dough mass</span><output class="font-mono text-[19px] font-medium text-olive" aria-label="Rectangular tin dough mass">{{ rectangularMass }}</output></div>
       </div>
     </SectionCard>
 
@@ -69,8 +69,8 @@ function updateRound<K extends keyof TinDoughMassCalculatorState['round']>(
         <NumberField id="round-diameter" label="Diameter" unit="cm" :model-value="model.round.diameterCm" :min="0" :max="100" :step="1" :error="errors['round.diameterCm']" @update:model-value="updateRound('diameterCm', $event)" />
         <NumberField id="round-adjustment" label="Adjustment" unit="%" :model-value="model.round.adjustmentPercent" :min="-20" :max="20" :step="5" :error="errors['round.adjustmentPercent']" @update:model-value="updateRound('adjustmentPercent', $event)" />
       </div>
-      <div class="mt-[19px] grid grid-cols-1 rounded-[10px] border border-[#e9e0d3] bg-[#faf6ee]" aria-live="polite">
-        <div class="flex items-center justify-between gap-[12px] px-[15px] py-[13px] below-420:p-[11px]"><span class="text-[12px] text-[#71685c]">Suggested dough mass</span><output class="font-mono text-[19px] font-medium text-olive" aria-label="Round tin dough mass">{{ roundMass }}</output></div>
+      <div class="mt-[19px] grid grid-cols-1 rounded-[10px] border border-line-strong bg-surface-subtle" aria-live="polite">
+        <div class="flex items-center justify-between gap-[12px] px-[15px] py-[13px] below-420:p-[11px]"><span class="text-[12px] text-ink-secondary">Suggested dough mass</span><output class="font-mono text-[19px] font-medium text-olive" aria-label="Round tin dough mass">{{ roundMass }}</output></div>
       </div>
     </SectionCard>
   </div>

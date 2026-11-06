@@ -10,7 +10,7 @@ import CalculatorNavigation from '../components/app/CalculatorNavigation.vue'
       <h1 id="page-title" class="m-0 font-serif text-[clamp(34px,5vw,56px)] font-semibold leading-[1.08] tracking-[-.045em] below-720:text-[clamp(35px,10vw,47px)]">A better dough<br>starts with a plan.</h1>
       <p class="mb-0 mt-[12px] max-w-[420px] text-[14px] leading-[1.65] text-muted below-720:text-[13px]">Build a pizza dough recipe around your target, fermentation, and flour. Your calculations stay on this device.</p>
     </div>
-    <span class="inline-flex items-center gap-[8px] whitespace-nowrap rounded-full border border-line bg-[#fbf8f1] px-[13px] py-[10px] font-mono text-[10px] uppercase tracking-[0.05em] text-[#686156] below-720:mt-[15px]"><span class="h-[6px] w-[6px] rounded-full bg-[#7e8a67]" />Recipe workspace</span>
+    <span class="inline-flex items-center gap-[8px] whitespace-nowrap rounded-full border border-line bg-surface-subtle px-[13px] py-[10px] font-mono text-[10px] uppercase tracking-[0.05em] text-ink-soft below-720:mt-[15px]"><span class="h-[6px] w-[6px] rounded-full bg-olive-bright" />Recipe workspace</span>
   </section>
   <DoughRecipeWorkspace />
   <CalculatorNavigation />

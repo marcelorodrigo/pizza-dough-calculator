@@ -1,9 +1,29 @@
 import { mount } from '@vue/test-utils'
-import { describe, expect, it } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import AppHeader from '../../app/components/app/AppHeader.vue'
 import { NuxtLinkStub } from '../helpers/nuxt-stubs'
 
+const store = {
+  load: vi.fn(() => null),
+  save: vi.fn()
+}
+
 describe('AppHeader', () => {
+  beforeEach(() => {
+    vi.stubGlobal('useNuxtApp', () => ({ $calculatorStateStore: store }))
+    vi.stubGlobal('matchMedia', vi.fn(() => ({
+      matches: false,
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn()
+    })))
+  })
+
+  afterEach(() => {
+    vi.unstubAllGlobals()
+    document.documentElement.classList.remove('dark')
+    document.querySelectorAll('meta[name="theme-color"]').forEach(meta => meta.remove())
+  })
+
   it('renders the brand and a link for every calculator', () => {
     const wrapper = mount(AppHeader, {
       global: { stubs: { NuxtLink: NuxtLinkStub } }
@@ -25,6 +45,19 @@ describe('AppHeader', () => {
       '/tools/flour-strength',
       '/tools/tin-mass',
       '/tools/water-temperature'
+    ])
+  })
+
+  it('offers light, system, and dark theme choices', () => {
+    const wrapper = mount(AppHeader, {
+      global: { stubs: { NuxtLink: NuxtLinkStub } }
+    })
+
+    expect(wrapper.get('[role="group"]').attributes('aria-label')).toBe('Color theme')
+    expect(wrapper.findAll('[role="group"] button').map(button => button.text())).toEqual([
+      'Light',
+      'System',
+      'Dark'
     ])
   })
 })

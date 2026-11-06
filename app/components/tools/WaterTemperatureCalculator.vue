@@ -78,9 +78,9 @@ function changeUnit(unit: WaterTemperatureInput['temperatureUnit']) {
         @update:model-value="update('roomTemperature', $event)"
       />
     </div>
-    <div class="mt-[19px] grid grid-cols-1 rounded-[10px] border border-[#e9e0d3] bg-[#faf6ee]" aria-live="polite">
-      <div class="flex items-center justify-between gap-[12px] px-[15px] py-[13px] below-420:p-[11px]"><span class="text-[12px] text-[#71685c]">Water temperature</span><output class="font-mono text-[19px] font-medium text-olive" aria-label="Water temperature result">{{ formattedResult }}</output></div>
+    <div class="mt-[19px] grid grid-cols-1 rounded-[10px] border border-line-strong bg-surface-subtle" aria-live="polite">
+      <div class="flex items-center justify-between gap-[12px] px-[15px] py-[13px] below-420:p-[11px]"><span class="text-[12px] text-ink-secondary">Water temperature</span><output class="font-mono text-[19px] font-medium text-olive" aria-label="Water temperature result">{{ formattedResult }}</output></div>
     </div>
-    <p class="mb-0 mt-[12px] text-[11px] text-[#8b8378]">The calculated water temperature has a minimum of 4°C.</p>
+    <p class="mb-0 mt-[12px] text-[11px] text-muted-soft">The calculated water temperature has a minimum of 4°C.</p>
   </SectionCard>
 </template>

@@ -43,7 +43,7 @@ function update<K extends keyof DoughRecipeInput['preferments']>(
       </div>
     </div>
 
-    <div class="grid gap-[12px] border-t border-[#eee9e0] py-[13px]">
+    <div class="grid gap-[12px] border-t border-line-subtle py-[13px]">
       <CheckboxField
         label="Poolish"
         aria-label="Poolish"
@@ -56,7 +56,7 @@ function update<K extends keyof DoughRecipeInput['preferments']>(
       </div>
     </div>
 
-    <div class="grid gap-[12px] border-t border-[#eee9e0] py-[13px]">
+    <div class="grid gap-[12px] border-t border-line-subtle py-[13px]">
       <CheckboxField
         label="Biga"
         aria-label="Biga"

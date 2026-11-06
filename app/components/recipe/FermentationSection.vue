@@ -79,7 +79,7 @@ function updateYeast<K extends keyof DoughRecipeInput['yeast']>(
       <NumberField label="Controlled temperature" :unit="`°${modelValue.temperatureUnit}`" :model-value="modelValue.controlledTemperature" :min="controlledMinimum" :max="controlledMaximum" :step="0.5" :error="errors['fermentation.controlledTemperature']" @update:model-value="update('controlledTemperature', $event)" />
     </div>
 
-    <hr class="my-[18px] border-t border-[#eee9e0]">
+    <hr class="my-[18px] border-t border-line-subtle">
     <RadioGroupField
       legend="Yeast type"
       name="dough-yeast-type"

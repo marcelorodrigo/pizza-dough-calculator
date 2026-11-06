@@ -14,11 +14,11 @@ const inputId = computed(() => props.id ?? generatedId)
 </script>
 
 <template>
-  <label class="select-field flex min-w-0 flex-col gap-[7px] text-[12px] font-semibold text-[#514a41]" :for="inputId">
+  <label class="select-field flex min-w-0 flex-col gap-[7px] text-[12px] font-semibold text-ink-soft" :for="inputId">
     <span>{{ label }}</span>
     <select
       :id="inputId"
-      class="min-h-[43px] w-full rounded-[8px] border border-[#ddd6ca] bg-[#fffefa] px-[11px] py-[10px] text-[13px] font-normal text-ink"
+      class="min-h-[43px] w-full rounded-[8px] border border-line-strong bg-surface px-[11px] py-[10px] text-[13px] font-normal text-ink"
       :value="model"
       :disabled="disabled"
       @change="model = ($event.target as HTMLSelectElement).value"

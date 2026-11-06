@@ -61,10 +61,10 @@ function applyUpdate() {
 <template>
   <aside
     v-if="updateAvailable"
-    class="fixed bottom-[20px] left-1/2 z-10 m-0 flex w-max max-w-[calc(100%_-_32px)] -translate-x-1/2 items-center gap-[20px] rounded-[12px] border border-[#dfc8af] bg-[#fff9ee] px-[16px] py-[13px] text-[13px] text-[#46372a] shadow-[0_8px_30px_#39261021]"
+    class="fixed bottom-[20px] left-1/2 z-10 m-0 flex w-max max-w-[calc(100%_-_32px)] -translate-x-1/2 items-center gap-[20px] rounded-[12px] border border-toast-border bg-toast-surface px-[16px] py-[13px] text-[13px] text-toast shadow-toast"
     role="status"
   >
     <span>A fresh batch is ready.</span>
-    <button class="rounded-[6px] border-0 bg-clay px-[12px] py-[8px] font-bold text-white" type="button" @click="applyUpdate">Update app</button>
+    <button class="rounded-[6px] border-0 bg-clay px-[12px] py-[8px] font-bold text-on-clay" type="button" @click="applyUpdate">Update app</button>
   </aside>
 </template>
