@@ -1,4 +1,5 @@
 import tailwindcss from '@tailwindcss/vite'
+import { createThemeInitScript } from './app/utils/theme-init-script'
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -15,10 +16,11 @@ export default defineNuxtConfig({
       title: 'Dough Notes — Pizza dough calculator',
       meta: [
         { name: 'description', content: 'A baker-focused pizza dough calculator, ready for your next bake.' },
-        { name: 'theme-color', content: '#f5f2eb' },
+        { name: 'color-scheme', content: 'light dark' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1, viewport-fit=cover' }
       ],
-      link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
+      link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+      script: [{ innerHTML: createThemeInitScript(), tagPriority: 'critical' }]
     }
   },
   pwa: {

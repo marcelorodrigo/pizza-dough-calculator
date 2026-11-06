@@ -9,6 +9,7 @@ A planning tool for home pizza makers that runs in a phone browser. Calculate ho
 - **Customize the formula.** Blend up to six flours, add a poolish, biga, or autolysis, and use old dough.
 - **Works offline.** After the first online visit, the app runs without a connection and restores your last inputs.
 - **No account or server.** All calculations run on your device.
+- **Respects your theme.** Follows your device's light or dark setting, with a manual Light, Dark, or System choice.
 
 ## Recipe calculator
 

@@ -26,6 +26,7 @@ const emit = defineEmits<{
   'update:style': [value: DoughStyleId]
 }>()
 
+/** Emits the target state with one field replaced. */
 function update<K extends keyof DoughRecipeInput['target']>(
   key: K,
   value: DoughRecipeInput['target'][K]
@@ -66,7 +67,7 @@ function update<K extends keyof DoughRecipeInput['target']>(
       <NumberField label="Second ball weight" unit="g" :model-value="modelValue.secondBallWeightGrams" :min="10" :max="1500" :step="5" :error="errors['target.secondBallWeightGrams']" @update:model-value="update('secondBallWeightGrams', $event)" />
     </div>
 
-    <hr class="my-[18px] border-t border-[#eee9e0]">
+    <hr class="my-[18px] border-t border-line-subtle">
     <div class="grid grid-cols-2 gap-[14px] below-420:grid-cols-1">
       <NumberField label="Old dough out" unit="g" :model-value="modelValue.oldDoughOutGrams" :min="0" :max="500" :step="10" :error="errors['target.oldDoughOutGrams']" @update:model-value="update('oldDoughOutGrams', $event)" />
       <CheckboxField

@@ -8,9 +8,11 @@ let serviceWorkerContainer: ServiceWorkerContainer | undefined
 let updateRequested = false
 let isMounted = false
 
+/** Watches a newly installing service worker until it becomes ready or redundant. */
 function watchInstallingWorker() {
   if (!installingWorker) return
   const worker = installingWorker
+  /** Flags an installed worker when another worker already controls the page. */
   const onStateChange = () => {
     if (worker.state === 'installed' && navigator.serviceWorker.controller) {
       updateAvailable.value = true
@@ -22,6 +24,7 @@ function watchInstallingWorker() {
   worker.addEventListener('statechange', onStateChange)
 }
 
+/** Starts watching the most recently installing service worker. */
 function onUpdateFound() {
   installingWorker = registration?.installing ?? null
   watchInstallingWorker()
@@ -46,10 +49,12 @@ onUnmounted(() => {
   serviceWorkerContainer?.removeEventListener('controllerchange', onControllerChange)
 })
 
+/** Reloads the page after a requested update takes control. */
 function onControllerChange() {
   if (updateRequested) location.reload()
 }
 
+/** Asks the waiting service worker to activate the new version. */
 function applyUpdate() {
   const waitingWorker = registration?.waiting
   if (!waitingWorker) return
@@ -61,10 +66,10 @@ function applyUpdate() {
 <template>
   <aside
     v-if="updateAvailable"
-    class="fixed bottom-[20px] left-1/2 z-10 m-0 flex w-max max-w-[calc(100%_-_32px)] -translate-x-1/2 items-center gap-[20px] rounded-[12px] border border-[#dfc8af] bg-[#fff9ee] px-[16px] py-[13px] text-[13px] text-[#46372a] shadow-[0_8px_30px_#39261021]"
+    class="fixed bottom-[20px] left-1/2 z-10 m-0 flex w-max max-w-[calc(100%_-_32px)] -translate-x-1/2 items-center gap-[20px] rounded-[12px] border border-toast-border bg-toast-surface px-[16px] py-[13px] text-[13px] text-toast shadow-toast"
     role="status"
   >
     <span>A fresh batch is ready.</span>
-    <button class="rounded-[6px] border-0 bg-clay px-[12px] py-[8px] font-bold text-white" type="button" @click="applyUpdate">Update app</button>
+    <button class="rounded-[6px] border-0 bg-clay px-[12px] py-[8px] font-bold text-on-clay" type="button" @click="applyUpdate">Update app</button>
   </aside>
 </template>

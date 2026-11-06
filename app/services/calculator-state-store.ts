@@ -8,13 +8,16 @@ interface StorageLike {
   setItem(key: string, value: string): void
 }
 
-const STATE_VERSION = 1
+export const STATE_VERSION = 1
+export const STATE_STORAGE_PREFIX = 'dough-calculator:'
 
+/** Creates a versioned state store backed by the supplied storage implementation. */
 export function createCalculatorStateStore(storage: StorageLike): CalculatorStateStore {
   return {
+    /** Loads and validates a versioned value, returning null when unavailable. */
     load(key) {
       try {
-        const storedValue = storage.getItem(`dough-calculator:${key}`)
+        const storedValue = storage.getItem(`${STATE_STORAGE_PREFIX}${key}`)
         if (!storedValue) return null
         const parsed: unknown = JSON.parse(storedValue)
         if (
@@ -31,10 +34,11 @@ export function createCalculatorStateStore(storage: StorageLike): CalculatorStat
         return null
       }
     },
+    /** Persists a value with the current state version, ignoring storage failures. */
     save(key, value) {
       try {
         storage.setItem(
-          `dough-calculator:${key}`,
+          `${STATE_STORAGE_PREFIX}${key}`,
           JSON.stringify({ version: STATE_VERSION, data: value })
         )
       } catch {

@@ -38,6 +38,7 @@ const yeastOptions = computed(() => yeastChoices.map(choice => ({
   disabled: props.sourdoughDisabled && (choice.value === 'LMS' || choice.value === 'LML')
 })))
 
+/** Emits the fermentation state with one field replaced. */
 function update<K extends keyof DoughRecipeInput['fermentation']>(
   key: K,
   value: DoughRecipeInput['fermentation'][K]
@@ -45,6 +46,7 @@ function update<K extends keyof DoughRecipeInput['fermentation']>(
   emit('update:modelValue', { ...props.modelValue, [key]: value })
 }
 
+/** Emits the yeast state with one field replaced. */
 function updateYeast<K extends keyof DoughRecipeInput['yeast']>(
   key: K,
   value: DoughRecipeInput['yeast'][K]
@@ -79,7 +81,7 @@ function updateYeast<K extends keyof DoughRecipeInput['yeast']>(
       <NumberField label="Controlled temperature" :unit="`°${modelValue.temperatureUnit}`" :model-value="modelValue.controlledTemperature" :min="controlledMinimum" :max="controlledMaximum" :step="0.5" :error="errors['fermentation.controlledTemperature']" @update:model-value="update('controlledTemperature', $event)" />
     </div>
 
-    <hr class="my-[18px] border-t border-[#eee9e0]">
+    <hr class="my-[18px] border-t border-line-subtle">
     <RadioGroupField
       legend="Yeast type"
       name="dough-yeast-type"

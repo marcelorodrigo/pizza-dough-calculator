@@ -14,6 +14,7 @@ const emit = defineEmits<{
   'toggle-preferment': [value: 'autolysis' | PrefermentType]
 }>()
 
+/** Emits the preferment state with one field replaced. */
 function update<K extends keyof DoughRecipeInput['preferments']>(
   key: K,
   value: DoughRecipeInput['preferments'][K]
@@ -43,7 +44,7 @@ function update<K extends keyof DoughRecipeInput['preferments']>(
       </div>
     </div>
 
-    <div class="grid gap-[12px] border-t border-[#eee9e0] py-[13px]">
+    <div class="grid gap-[12px] border-t border-line-subtle py-[13px]">
       <CheckboxField
         label="Poolish"
         aria-label="Poolish"
@@ -56,7 +57,7 @@ function update<K extends keyof DoughRecipeInput['preferments']>(
       </div>
     </div>
 
-    <div class="grid gap-[12px] border-t border-[#eee9e0] py-[13px]">
+    <div class="grid gap-[12px] border-t border-line-subtle py-[13px]">
       <CheckboxField
         label="Biga"
         aria-label="Biga"
