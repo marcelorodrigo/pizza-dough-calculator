@@ -1,61 +1,61 @@
 # Pizza Dough Calculator
 
-A phone-first planning tool for home pizza makers. Work out how much dough you need, split it across flours and preferments, size it to your pan, and get your water to the right temperature — all in the browser, with your inputs kept on your device.
+A planning tool for home pizza makers that runs in a phone browser. Calculate how much dough you need, divide the flour across up to six flours and preferments, size the dough to your pan, and bring your water to the right temperature. The app keeps your inputs on your device.
 
 ## Why use it
 
-- **Plan by weight, not guesswork.** Start from the number and size of dough balls you want and work backwards to the ingredients.
-- **Adapt to your schedule.** Room and cold fermentation times and temperatures decide how much yeast the dough needs.
-- **Make it your own.** Blend up to six flours, add a poolish, biga, or autolysis, and put old dough to work.
-- **Works offline.** After the first visit the app keeps running without a connection, and your last inputs are restored each time you return.
-- **No account, no server.** Every calculation happens on your device.
+- **Plan by weight.** Start with the number and size of dough balls you want, then calculate the ingredient amounts.
+- **Adapt to your schedule.** Room and cold fermentation times and temperatures determine how much yeast the dough needs.
+- **Customize the formula.** Blend up to six flours, add a poolish, biga, or autolysis, and use old dough.
+- **Works offline.** After the first online visit, the app runs without a connection and restores your last inputs.
+- **No account or server.** All calculations run on your device.
 
 ## Recipe calculator
 
 The main workspace builds a complete dough formula from your target.
 
-**Dough target.** Pick a style — Neapolitan or Pan Pizza — to load sensible starting weights, hydration, salt, and fermentation settings. Then set the number and weight of dough balls, optionally add a second ball size, and allow for wastage. You can also reserve part of the batch as old dough for a future bake, or include a share of old dough from a previous batch.
+**Dough target.** Choose Neapolitan or Pan Pizza to load starting weights, hydration, salt, and fermentation settings. Set the number and weight of dough balls, add a second ball size if needed, and allow for wastage. You can reserve part of the batch as old dough for a future bake, or include old dough from a previous batch.
 
-**Flour & ingredients.** Choose hydration, salt, and optional fat, then split the flour across up to six flours by percentage. Flour shares must add up to exactly 100% to show individual amounts.
+**Flour and ingredients.** Set hydration, salt, and optional fat, then divide the flour across up to six flours by percentage. The app shows individual flour amounts only when the shares total exactly 100%.
 
-**Fermentation & yeast.** Describe your rise: room fermentation time and temperature, plus an optional controlled cold fermentation. Temperatures can be entered in Celsius or Fahrenheit. Choose from fresh compressed yeast, instant dry, active dry, stiff sourdough, or liquid sourdough, and fine-tune the amount with an adjustment percentage.
+**Fermentation and yeast.** Enter room fermentation time and temperature, and add a controlled-temperature fermentation if you use one. Temperatures can be in Celsius or Fahrenheit. Choose fresh compressed yeast, instant dry, active dry, stiff sourdough, or liquid sourdough, then adjust the amount by a percentage.
 
-**Preferments.** Add autolysis, poolish, or biga, each with its own share of flour, water, and fermentation time. Autolysis can be combined with either poolish or biga.
+**Preferments.** Add autolysis, poolish, or biga. Each takes a share of the recipe's flour and water. Poolish and biga also take yeast, and poolish has its own fermentation time. Autolysis can be combined with either poolish or biga.
 
-**Results and warnings.** The recipe panel shows your target dough mass, total flour, and the main dough's flour, water, salt, fat, and yeast. When you use several flours it also lists the amount of each, and when you use preferments it tells you exactly what to prepare separately. It warns you when flour shares do not total 100%, when a preferment claims more flour or water than the recipe has, or when preferments leave too little yeast for the main dough.
+**Results and warnings.** The recipe panel shows target dough mass, total flour, and the main dough's flour, water, salt, fat, and yeast. If you use several flours, it lists the amount of each. If you use preferments, it lists what to prepare separately. The app warns you when flour shares do not total 100%, when a preferment takes more flour or water than the recipe contains, or when preferments leave too little yeast for the main dough.
 
 ## Flour strength
 
-Two ways to work with flour strength (the W value):
+You can work with flour strength (the W value) in two ways:
 
-- **Reach a target W.** Enter the strength of two flours and the strength you want; the calculator gives you the share of each.
-- **Measure an existing blend.** Enter the percentages and W values of up to four flours to get the weighted strength of the mix.
+- **Reach a target W.** Enter the strength of two flours and your target strength. The calculator returns the share of each flour.
+- **Measure an existing blend.** Enter the percentages and W values of up to four flours. The calculator returns the weighted strength of the mix.
 
 ## Tin dough mass
 
-Estimate how much dough a pan needs from its inside dimensions. Use the rectangular option for a sheet pan, or the round option for a pizza tin by diameter. An adjustment control lets you go slightly lighter or heavier for your preferred thickness.
+Estimate how much dough a pan needs from its inside dimensions. Use the rectangular option for a sheet pan, or the round option for a pizza tin by diameter. An adjustment control makes the dough slightly lighter or heavier for your preferred thickness.
 
 ## Water temperature
 
-Get your water to the temperature that lands the finished dough where you want it. Enter the desired final dough temperature and the room temperature, then choose your mixer — fork, spiral, planetary, plunging arms, or hands — so mixer friction is taken into account. Results are shown in Celsius or Fahrenheit and never go below 4 °C.
+Calculate the water temperature that brings the finished dough to your target. Enter the desired dough temperature and the room temperature, then select your mixer: fork, spiral, planetary, plunging arms, or hands. The calculator accounts for mixer friction and shows the result in Celsius or Fahrenheit. The result never falls below 4 °C.
 
 ## How the numbers are worked out
 
-The calculators use the inputs you provide directly:
+The calculators use the inputs you provide:
 
 - Fermentation time and temperature set the yeast amount, and the yeast type scales it.
-- Your ingredient percentages and target weight set the flour, water, salt, and fat.
-- Flour shares divide the total flour between your flours.
+- Ingredient percentages and target weight set the flour, water, salt, and fat.
+- Flour shares divide the total flour among your flours.
 - Preferments take their share of flour, water, and yeast from the main recipe.
-- Pan dimensions and dough thickness set the dough mass for a tin.
+- Pan dimensions and the thickness adjustment set the dough mass.
 - Room temperature and mixer friction set the water temperature.
 
 ## On your device
 
-Your latest inputs are saved locally for each calculator, so you can close the app and pick up where you left off. Once the app has loaded online it can be installed and used offline; the first visit still needs a connection. When a new version is ready, the app offers to update itself.
+The app saves your latest inputs for each calculator on your device. You can close the app and continue where you left off. After the first online visit, you can install the app and use it offline. When a new version is available, the app offers an update.
 
-Nothing is sent to a server. There are no accounts and no cloud storage.
+Nothing is sent to a server. The app has no accounts and no cloud storage.
 
 ## What it doesn't do
 
-The results are estimates to guide your bake, not guarantees — flour, hydration, and your kitchen will always have the final say. The app does not store recipes in the cloud, sync between devices, or share formulas with others.
+The results estimate your bake; they are not guarantees. Flour, hydration, and your kitchen affect the final dough. The app does not store recipes in the cloud, sync between devices, or share formulas with others.
