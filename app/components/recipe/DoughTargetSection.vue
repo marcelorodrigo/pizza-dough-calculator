@@ -26,6 +26,7 @@ const emit = defineEmits<{
   'update:style': [value: DoughStyleId]
 }>()
 
+/** Emits the target state with one field replaced. */
 function update<K extends keyof DoughRecipeInput['target']>(
   key: K,
   value: DoughRecipeInput['target'][K]

@@ -17,12 +17,14 @@ interface ThemePreferenceController {
 
 const DARK_MEDIA_QUERY = '(prefers-color-scheme: dark)'
 
+/** Returns the dark-scheme media query when the browser exposes matchMedia. */
 function getMediaQuery(): MediaQueryList | null {
   return typeof window !== 'undefined' && typeof window.matchMedia === 'function'
     ? window.matchMedia(DARK_MEDIA_QUERY)
     : null
 }
 
+/** Applies a resolved theme to the document root and theme-color metadata. */
 function applyTheme(theme: ResolvedTheme) {
   if (typeof document === 'undefined') return
 
@@ -45,6 +47,7 @@ function applyTheme(theme: ResolvedTheme) {
   }
 }
 
+/** Creates reactive theme state and persists the user's preference through the store. */
 export function useThemePreference(store?: CalculatorStateStore): ThemePreferenceController {
   const stateStore = store ?? useNuxtApp().$calculatorStateStore
   const saved = stateStore.load(THEME_STORAGE_KEY)
@@ -55,8 +58,9 @@ export function useThemePreference(store?: CalculatorStateStore): ThemePreferenc
     resolveTheme(preference.value, systemPrefersDark.value)
   )
 
+  /** Keeps the cached system preference in sync with media changes. */
   function onSystemThemeChange(event: MediaQueryListEvent) {
-    if (preference.value === 'system') systemPrefersDark.value = event.matches
+    systemPrefersDark.value = event.matches
   }
 
   watch(resolvedTheme, theme => applyTheme(theme), { immediate: true })
@@ -69,6 +73,7 @@ export function useThemePreference(store?: CalculatorStateStore): ThemePreferenc
     mediaQuery?.removeEventListener('change', onSystemThemeChange)
   })
 
+  /** Persists and applies a validated theme preference. */
   function setPreference(value: ThemePreference) {
     if (!isThemePreference(value)) return
     preference.value = value

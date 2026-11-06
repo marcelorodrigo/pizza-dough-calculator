@@ -3,6 +3,7 @@ import { onMounted, onUnmounted, ref } from 'vue'
 
 const isOnline = ref(true)
 
+/** Syncs the banner with the browser's current connectivity state. */
 function updateStatus() {
   isOnline.value = navigator.onLine
 }

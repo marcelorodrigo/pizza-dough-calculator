@@ -28,6 +28,7 @@ const weightedDisplay = computed(() => weightedResult.value.status === 'availabl
   ? Number(weightedResult.value.strengthW.toFixed(0)).toString()
   : '–')
 
+/** Updates one field of the two-flour blend. */
 function updateBlend<K extends keyof FlourStrengthCalculatorState['blend']>(
   key: K,
   value: FlourStrengthCalculatorState['blend'][K]
@@ -35,6 +36,7 @@ function updateBlend<K extends keyof FlourStrengthCalculatorState['blend']>(
   model.value = { ...model.value, blend: { ...model.value.blend, [key]: value } }
 }
 
+/** Updates one entry of the weighted-strength inputs. */
 function updateWeighted<K extends 'sharesPercent' | 'strengthsW'>(
   key: K,
   index: number,
@@ -45,6 +47,7 @@ function updateWeighted<K extends 'sharesPercent' | 'strengthsW'>(
   model.value = { ...model.value, weighted: { ...model.value.weighted, [key]: values } }
 }
 
+/** Formats a blend share percentage for display. */
 function blendShare(value: number | undefined): string {
   return value === undefined ? '–' : formatPercent(Number(value.toFixed(0)))
 }

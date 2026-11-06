@@ -31,6 +31,7 @@
   --line-subtle: #eee9e0;
 
   --clay: #b35437;
+  --clay-eyebrow: #87402b;
   --clay-dark: #87402b;
   --clay-soft: #f4e9df;
   --clay-border: #bd8061;
@@ -84,6 +85,7 @@
   --line-subtle: #322c26;
 
   --clay: #b35437;
+  --clay-eyebrow: #e79a78;
   --clay-dark: #e79a78;
   --clay-soft: #3a2a22;
   --clay-border: #b97a5d;
@@ -140,6 +142,7 @@
   --color-line-subtle: var(--line-subtle);
 
   --color-clay: var(--clay);
+  --color-clay-eyebrow: var(--clay-eyebrow);
   --color-clay-dark: var(--clay-dark);
   --color-clay-soft: var(--clay-soft);
   --color-clay-border: var(--clay-border);

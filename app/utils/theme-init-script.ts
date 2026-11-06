@@ -1,8 +1,10 @@
 import { THEME_COLORS, THEME_STORAGE_KEY } from '../domain/theme'
 import { STATE_STORAGE_PREFIX, STATE_VERSION } from '../services/calculator-state-store'
 
-// This runs before hydration, so it intentionally duplicates the small
-// validation and resolution rules from app/domain/theme.ts.
+/**
+ * Builds the inline script that applies the saved or system theme before hydration.
+ * It intentionally duplicates the small validation and resolution rules from app/domain/theme.ts.
+ */
 export function createThemeInitScript(): string {
   const storageKey = JSON.stringify(`${STATE_STORAGE_PREFIX}${THEME_STORAGE_KEY}`)
   const lightColor = JSON.stringify(THEME_COLORS.light)

@@ -15,7 +15,7 @@ const { preference, setPreference } = useThemePreference()
 <template>
   <header class="sticky top-0 z-[5] border-b border-line bg-header-surface backdrop-blur-[14px] below-720:static">
     <div
-      class="mx-auto flex min-h-[74px] w-[min(1240px,calc(100%_-_48px))] items-center gap-[48px] below-960:gap-[22px] below-720:min-h-[65px] below-720:w-[calc(100%_-_30px)] below-720:flex-wrap below-720:justify-between below-720:gap-[10px] below-720:pt-[12px]"
+      class="mx-auto flex min-h-[74px] w-[min(1240px,calc(100%_-_48px))] items-center gap-[48px] below-960:flex-wrap below-960:justify-between below-960:gap-[10px] below-960:pt-[12px] below-720:min-h-[65px] below-720:w-[calc(100%_-_30px)]"
     >
       <NuxtLink class="brand inline-flex flex-[0_0_auto] items-center gap-[10px] no-underline" to="/" aria-label="Dough Notes home">
         <span
@@ -25,7 +25,7 @@ const { preference, setPreference } = useThemePreference()
         <span class="text-[18px] font-bold tracking-[-.05em] below-720:text-[16px]">Dough<span class="text-clay-dark">Notes</span></span>
       </NuxtLink>
       <nav
-        class="flex items-center gap-[5px] below-720:order-2 below-720:-mx-[15px] below-720:w-[calc(100%_+_30px)] below-720:gap-0 below-720:overflow-x-auto below-720:border-t below-720:border-line-subtle below-720:px-[8px]"
+        class="flex items-center gap-[5px] below-960:order-2 below-960:-mx-[15px] below-960:w-[calc(100%_+_30px)] below-960:gap-0 below-960:overflow-x-auto below-960:border-t below-960:border-line-subtle below-960:px-[8px]"
         aria-label="Calculators"
       >
         <NuxtLink

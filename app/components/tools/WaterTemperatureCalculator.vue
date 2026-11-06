@@ -31,10 +31,12 @@ const mixerOptions = [
   { value: 'hands', label: 'Hands' }
 ] as const
 
+/** Updates one water-temperature input field. */
 function update<K extends keyof WaterTemperatureInput>(key: K, value: WaterTemperatureInput[K]) {
   model.value = { ...model.value, [key]: value }
 }
 
+/** Switches units while normalising the temperature inputs. */
 function changeUnit(unit: WaterTemperatureInput['temperatureUnit']) {
   model.value = setWaterTemperatureUnit(model.value, unit)
 }

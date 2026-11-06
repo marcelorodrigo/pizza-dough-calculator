@@ -14,6 +14,7 @@ const emit = defineEmits<{
   'toggle-preferment': [value: 'autolysis' | PrefermentType]
 }>()
 
+/** Emits the preferment state with one field replaced. */
 function update<K extends keyof DoughRecipeInput['preferments']>(
   key: K,
   value: DoughRecipeInput['preferments'][K]

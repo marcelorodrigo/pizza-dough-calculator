@@ -22,6 +22,7 @@ const roundMass = computed(() => roundResult.value?.status === 'available'
   ? formatMass(roundResult.value.massGrams)
   : '–')
 
+/** Updates one field of the rectangular tin inputs. */
 function updateRectangular<K extends keyof TinDoughMassCalculatorState['rectangular']>(
   key: K,
   value: TinDoughMassCalculatorState['rectangular'][K]
@@ -29,6 +30,7 @@ function updateRectangular<K extends keyof TinDoughMassCalculatorState['rectangu
   model.value = { ...model.value, rectangular: { ...model.value.rectangular, [key]: value } }
 }
 
+/** Updates one field of the round tin inputs. */
 function updateRound<K extends keyof TinDoughMassCalculatorState['round']>(
   key: K,
   value: TinDoughMassCalculatorState['round'][K]

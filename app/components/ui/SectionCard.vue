@@ -16,7 +16,7 @@ defineProps<{
   >
     <div class="mb-[17px] flex items-start justify-between gap-[12px]">
       <div>
-        <p class="eyebrow m-0 mb-[5px] font-mono text-[10px] uppercase tracking-[0.13em] text-clay">{{ eyebrow }}</p>
+        <p class="eyebrow m-0 mb-[5px] font-mono text-[10px] uppercase tracking-[0.13em] text-clay-eyebrow">{{ eyebrow }}</p>
         <h2 :id="headingId" class="m-0 font-serif text-[23px] font-semibold tracking-[-.025em]">{{ title }}</h2>
       </div>
       <span v-if="step" class="step-mark grid h-[32px] w-[32px] place-items-center rounded-full border border-line font-mono text-[10px] text-muted-soft">{{ step }}</span>

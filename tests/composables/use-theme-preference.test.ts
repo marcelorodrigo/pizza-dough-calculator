@@ -5,6 +5,7 @@ import { useThemePreference } from '../../app/composables/useThemePreference'
 import type { ThemePreference } from '../../app/domain/theme'
 import type { CalculatorStateStore } from '../../app/services/calculator-state-store'
 
+/** Creates a stub store that returns the supplied saved value. */
 function createStore(saved: unknown = null): CalculatorStateStore {
   return {
     load: vi.fn(() => saved),
@@ -12,6 +13,7 @@ function createStore(saved: unknown = null): CalculatorStateStore {
   }
 }
 
+/** Mounts a component that exposes the theme controller for assertions. */
 function mountTheme(store: CalculatorStateStore) {
   let controller: ReturnType<typeof useThemePreference> | undefined
   const component = defineComponent({
@@ -25,6 +27,7 @@ function mountTheme(store: CalculatorStateStore) {
   return { wrapper, getController: () => controller! }
 }
 
+/** Installs a controllable matchMedia stub for system theme changes. */
 function installMedia(initialMatches: boolean) {
   let listener: ((event: MediaQueryListEvent) => void) | undefined
   const media = {
@@ -47,10 +50,12 @@ function installMedia(initialMatches: boolean) {
   }
 }
 
+/** Returns whether the document currently has the dark theme class. */
 function isDark() {
   return document.documentElement.classList.contains('dark')
 }
 
+/** Returns the current theme-color metadata value. */
 function themeColor() {
   return document.querySelector('meta[name="theme-color"]')?.getAttribute('content')
 }
@@ -130,6 +135,24 @@ describe('useThemePreference', () => {
     media.emit(false)
     await nextTick()
     expect(isDark()).toBe(false)
+  })
+
+  it('retains the latest system setting while a manual theme is selected', async () => {
+    const store = createStore(null)
+    const media = installMedia(false)
+    const { getController } = mountTheme(store)
+    await nextTick()
+
+    getController().setPreference('light')
+    await nextTick()
+    media.emit(true)
+    await nextTick()
+    expect(getController().resolvedTheme.value).toBe('light')
+
+    getController().setPreference('system')
+    await nextTick()
+    expect(getController().resolvedTheme.value).toBe('dark')
+    expect(isDark()).toBe(true)
   })
 
   it('removes the system listener when unmounted', () => {

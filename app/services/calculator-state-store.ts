@@ -11,8 +11,10 @@ interface StorageLike {
 export const STATE_VERSION = 1
 export const STATE_STORAGE_PREFIX = 'dough-calculator:'
 
+/** Creates a versioned state store backed by the supplied storage implementation. */
 export function createCalculatorStateStore(storage: StorageLike): CalculatorStateStore {
   return {
+    /** Loads and validates a versioned value, returning null when unavailable. */
     load(key) {
       try {
         const storedValue = storage.getItem(`${STATE_STORAGE_PREFIX}${key}`)
@@ -32,6 +34,7 @@ export function createCalculatorStateStore(storage: StorageLike): CalculatorStat
         return null
       }
     },
+    /** Persists a value with the current state version, ignoring storage failures. */
     save(key, value) {
       try {
         storage.setItem(

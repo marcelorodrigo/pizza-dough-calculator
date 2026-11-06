@@ -8,9 +8,11 @@ let serviceWorkerContainer: ServiceWorkerContainer | undefined
 let updateRequested = false
 let isMounted = false
 
+/** Watches a newly installing service worker until it becomes ready or redundant. */
 function watchInstallingWorker() {
   if (!installingWorker) return
   const worker = installingWorker
+  /** Flags an installed worker when another worker already controls the page. */
   const onStateChange = () => {
     if (worker.state === 'installed' && navigator.serviceWorker.controller) {
       updateAvailable.value = true
@@ -22,6 +24,7 @@ function watchInstallingWorker() {
   worker.addEventListener('statechange', onStateChange)
 }
 
+/** Starts watching the most recently installing service worker. */
 function onUpdateFound() {
   installingWorker = registration?.installing ?? null
   watchInstallingWorker()
@@ -46,10 +49,12 @@ onUnmounted(() => {
   serviceWorkerContainer?.removeEventListener('controllerchange', onControllerChange)
 })
 
+/** Reloads the page after a requested update takes control. */
 function onControllerChange() {
   if (updateRequested) location.reload()
 }
 
+/** Asks the waiting service worker to activate the new version. */
 function applyUpdate() {
   const waitingWorker = registration?.waiting
   if (!waitingWorker) return

@@ -1,14 +1,17 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { createThemeInitScript } from '../../app/utils/theme-init-script'
 
+/** Executes the generated inline theme script in the test document. */
 function runInitScript() {
   new Function(createThemeInitScript())()
 }
 
+/** Stubs matchMedia to report the supplied system preference. */
 function stubSystemTheme(prefersDark: boolean) {
   vi.stubGlobal('matchMedia', vi.fn(() => ({ matches: prefersDark })))
 }
 
+/** Writes a versioned theme preference to local storage. */
 function storedTheme(preference: string) {
   localStorage.setItem(
     'dough-calculator:theme',
@@ -16,6 +19,7 @@ function storedTheme(preference: string) {
   )
 }
 
+/** Returns the current theme-color metadata value. */
 function themeColor() {
   return document.querySelector('meta[name="theme-color"]')?.getAttribute('content')
 }
