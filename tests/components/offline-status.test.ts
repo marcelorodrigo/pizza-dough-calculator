@@ -18,19 +18,19 @@ describe('OfflineStatus', () => {
     const wrapper = mount(OfflineStatus)
     await nextTick()
 
-    expect(wrapper.get('[role="status"]').text()).toContain('You’re offline')
+    expect(wrapper.get('output').text()).toContain('You’re offline')
 
     setOnline(true)
     window.dispatchEvent(new Event('online'))
     await nextTick()
 
-    expect(wrapper.find('[role="status"]').exists()).toBe(false)
+    expect(wrapper.find('output').exists()).toBe(false)
 
     setOnline(false)
     window.dispatchEvent(new Event('offline'))
     await nextTick()
 
-    expect(wrapper.get('[role="status"]').text()).toContain('You’re offline')
+    expect(wrapper.get('output').text()).toContain('You’re offline')
   })
 
   it('removes its connectivity listeners when unmounted', () => {

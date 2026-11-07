@@ -36,6 +36,6 @@ describe('DefaultLayout', () => {
     expect(wrapper.get('header').exists()).toBe(true)
     expect(wrapper.get('#main-content').text()).toContain('Page content')
     expect(wrapper.get('.site-footer').text()).toContain('Good dough takes time.')
-    expect(wrapper.find('[role="status"]').exists()).toBe(false)
+    expect(wrapper.find('output').exists()).toBe(false)
   })
 })

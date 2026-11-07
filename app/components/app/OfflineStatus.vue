@@ -21,11 +21,10 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <p
+  <output
     v-if="!isOnline"
     class="fixed bottom-[20px] left-1/2 z-10 m-0 flex w-max max-w-[calc(100%_-_32px)] -translate-x-1/2 items-center gap-[20px] rounded-[12px] border border-toast-border bg-toast-surface px-[16px] py-[13px] text-[13px] text-toast shadow-toast"
-    role="status"
   >
     You’re offline. Your calculator and saved inputs are still available on this device.
-  </p>
+  </output>
 </template>
