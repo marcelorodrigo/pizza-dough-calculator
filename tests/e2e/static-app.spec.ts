@@ -1,6 +1,6 @@
-import { expect, test } from '@playwright/test'
+import { expect, test } from '@nuxt/test-utils/playwright'
 
-test('static output serves every calculator route', async ({ page }) => {
+test('static output serves every calculator route', async ({ page, goto }) => {
   const routes = [
     { path: '/', heading: 'A better dough' },
     { path: '/tools/flour-strength', heading: 'Flour strength' },
@@ -9,9 +9,19 @@ test('static output serves every calculator route', async ({ page }) => {
   ]
 
   for (const route of routes) {
-    await page.goto(route.path)
+    await goto(route.path, { waitUntil: 'hydration' })
     await expect(page.getByRole('heading', { name: new RegExp(route.heading, 'i'), level: 1 })).toBeVisible()
   }
+})
+
+test('returns 404 for missing assets but serves client routes', async ({ page }) => {
+  expect((await page.request.get('/_nuxt/does-not-exist')).status()).toBe(404)
+  expect((await page.request.get('/_nuxt/does-not-exist.js')).status()).toBe(404)
+  expect((await page.request.get('/missing.png')).status()).toBe(404)
+
+  const clientRoute = await page.request.get('/client-only-route')
+  expect(clientRoute.status()).toBe(200)
+  expect(clientRoute.headers()['content-type']).toContain('text/html')
 })
 
 test('generated output includes the PWA manifest and precaching service worker', async ({ page }) => {
@@ -32,8 +42,8 @@ test('generated output includes the PWA manifest and precaching service worker',
   expect(worker).toContain('tools/tin-mass')
 })
 
-test('restores the last recipe inputs after reloading', async ({ page }) => {
-  await page.goto('/')
+test('restores the last recipe inputs after reloading', async ({ page, goto }) => {
+  await goto('/', { waitUntil: 'hydration' })
   const roomHours = page.getByLabel('Room fermentation time')
   await roomHours.fill('12')
   await expect(roomHours).toHaveValue('12')
@@ -43,8 +53,8 @@ test('restores the last recipe inputs after reloading', async ({ page }) => {
   await expect(page.getByLabel('Room fermentation time')).toHaveValue('12')
 })
 
-test('serves the calculator shell and calculates after going offline', async ({ page, context }) => {
-  await page.goto('/')
+test('serves the calculator shell and calculates after going offline', async ({ page, context, goto }) => {
+  await goto('/', { waitUntil: 'hydration' })
   await page.evaluate(async () => {
     await navigator.serviceWorker.ready
   })

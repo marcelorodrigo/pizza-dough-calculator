@@ -42,8 +42,11 @@ jobs:
       - name: Build
         run: pnpm build
 
-      - name: Generate static site
-        run: pnpm generate
+      - name: Install Playwright browsers
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: E2E tests
+        run: pnpm test:e2e
 
       - name: SonarQube Cloud scan
         if: github.actor != 'dependabot[bot]'
