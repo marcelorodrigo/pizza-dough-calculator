@@ -14,16 +14,16 @@ pnpm test tests/domain/water-temperature.test.ts   # single test file
 pnpm test:coverage  # v8 coverage -> coverage/lcov.info
 pnpm build          # nuxt build
 pnpm generate       # static output for the PWA
-pnpm preview        # serve .output/public on :4173 (run `pnpm generate` first)
+pnpm preview        # SPA preview of .output/public on :4173 (run `pnpm generate` first)
 pnpm test:e2e       # Playwright; auto-runs `pnpm generate` + `pnpm preview`
 pnpm test:e2e tests/e2e/static-app.spec.ts         # single e2e file
 ```
 
-`pnpm preview` uses the pinned `serve` dev dependency. Do not use `nuxt preview` for the static preset: Nitro writes `npx serve public` into `.output/nitro.json`, and npm 11 rejects this repo's pnpm-only `devEngines`. Do not invoke `npx`/`npm` from scripts.
+`pnpm preview` runs `scripts/preview.mjs` with the pinned `sirv` dev dependency. It serves client routes from `index.html` and returns 404 for missing assets; set `HOST=0.0.0.0` to bind all interfaces. Do not use `nuxt preview` for the static preset: Nitro writes `npx serve public` into `.output/nitro.json`, and npm 11 rejects this repo's pnpm-only `devEngines`. Do not invoke `npx`/`npm` from scripts.
 
 There is **no lint or format script** and no ESLint/Prettier config. Do not invent one; verify with `pnpm typecheck` and `pnpm test`.
 
-CI (`.github/workflows/build.yml`) runs, in order: `typecheck` → `test:coverage` → `build` → `generate` → `test:e2e` → SonarQube scan. PRs target `master`; commits follow Conventional Commits.
+CI (`.github/workflows/build.yml`) runs, in order: `typecheck` → `test:coverage` → `build` → `test:e2e` → SonarQube scan. Playwright runs `pnpm generate` as part of E2E. PRs target `master`; commits follow Conventional Commits.
 
 ## Architecture
 
@@ -38,7 +38,7 @@ Adding a route requires updating the `nitro.prerender.routes` list in `nuxt.conf
 ## Testing
 
 - Unit/component tests use Vitest + happy-dom + `@vue/test-utils`; they do not use `@nuxt/test-utils`. `vitest.config.ts` includes `tests/**/*.test.ts`; run a single file with `pnpm test tests/domain/water-temperature.test.ts`.
-- E2E tests use `@nuxt/test-utils/playwright` in host mode. The static preset has no `.output/server/index.mjs`, so the default Nuxt Playwright fixture cannot start the app. `playwright.config.ts` sets `use.nuxt.host` to the `serve` process started by `webServer` (`pnpm generate && pnpm preview`).
+- E2E tests use `@nuxt/test-utils/playwright` in host mode. The static preset has no `.output/server/index.mjs`, so the default Nuxt Playwright fixture cannot start the app. `playwright.config.ts` sets `use.nuxt.host` to the preview server started by `webServer` (`pnpm generate && pnpm preview`).
 - Use `goto(..., { waitUntil: 'hydration' })` for initial navigations. Keep `page.goto` for flows where the service worker or first paint is the behavior under test, and for reloads.
 - If a future test needs Nuxt auto-imports, `useNuxtApp`, or `mountSuspended`, add a `defineVitestProject` Nuxt project and `tests/nuxt/**/*.test.ts`. Do not mix Nuxt runtime helpers and E2E helpers in one file.
 - Test layout: `tests/{domain,components,composables,plugins}` for Vitest and `tests/e2e` for Playwright. Vitest only includes `.test.ts`; Playwright only `.spec.ts`.

@@ -200,9 +200,9 @@ importers:
       happy-dom:
         specifier: ^21.0.4
         version: 21.0.4
-      serve:
-        specifier: 14.2.6
-        version: 14.2.6(supports-color@10.2.2)
+      sirv:
+        specifier: 3.0.2
+        version: 3.0.2
       tailwindcss:
         specifier: ^4.3.4
         version: 4.3.4
@@ -6725,7 +6725,8 @@ snapshots:
     optionalDependencies:
       '@vue/server-renderer': 3.5.45
 
-  '@zeit/schemas@2.36.0': {}
+  '@zeit/schemas@2.36.0':
+    optional: true
 
   abbrev@3.0.1: {}
 
@@ -6749,6 +6750,7 @@ snapshots:
       fast-uri: 3.1.9
       json-schema-traverse: 1.0.0
       require-from-string: 2.0.2
+    optional: true
 
   ajv@8.20.0:
     dependencies:
@@ -6762,14 +6764,17 @@ snapshots:
   ansi-align@3.0.1:
     dependencies:
       string-width: 4.2.3
+    optional: true
 
-  ansi-regex@5.0.1: {}
+  ansi-regex@5.0.1:
+    optional: true
 
   ansi-regex@6.5.0: {}
 
   ansi-styles@4.3.0:
     dependencies:
       color-convert: 2.0.1
+    optional: true
 
   ansi-styles@6.2.3: {}
 
@@ -6780,7 +6785,8 @@ snapshots:
       normalize-path: 3.0.0
       picomatch: 2.3.2
 
-  arch@2.2.0: {}
+  arch@2.2.0:
+    optional: true
 
   archiver@8.0.0(bare-buffer@3.7.1):
     dependencies:
@@ -6798,7 +6804,8 @@ snapshots:
       - bare-buffer
       - react-native-b4a
 
-  arg@5.0.2: {}
+  arg@5.0.2:
+    optional: true
 
   args-tokenizer@0.3.0: {}
 
@@ -6950,11 +6957,13 @@ snapshots:
       type-fest: 2.19.0
       widest-line: 4.0.1
       wrap-ansi: 8.1.0
+    optional: true
 
   brace-expansion@1.1.21:
     dependencies:
       balanced-match: 1.0.2
       concat-map: 0.0.1
+    optional: true
 
   brace-expansion@2.1.7:
     dependencies:
@@ -6993,9 +7002,11 @@ snapshots:
     dependencies:
       run-applescript: 7.1.0
 
-  bytes@3.0.0: {}
+  bytes@3.0.0:
+    optional: true
 
-  bytes@3.1.2: {}
+  bytes@3.1.2:
+    optional: true
 
   c12@3.3.4(magicast@0.5.5):
     dependencies:
@@ -7033,7 +7044,8 @@ snapshots:
       call-bind-apply-helpers: 1.0.2
       get-intrinsic: 1.3.0
 
-  camelcase@7.0.1: {}
+  camelcase@7.0.1:
+    optional: true
 
   caniuse-api@4.0.0:
     dependencies:
@@ -7047,13 +7059,16 @@ snapshots:
   chalk-template@0.4.0:
     dependencies:
       chalk: 4.1.2
+    optional: true
 
   chalk@4.1.2:
     dependencies:
       ansi-styles: 4.3.0
       supports-color: 7.2.0
+    optional: true
 
-  chalk@5.0.1: {}
+  chalk@5.0.1:
+    optional: true
 
   chokidar@5.0.0:
     dependencies:
@@ -7071,7 +7086,8 @@ snapshots:
 
   citty@0.2.2: {}
 
-  cli-boxes@3.0.0: {}
+  cli-boxes@3.0.0:
+    optional: true
 
   clickable-path@0.1.1: {}
 
@@ -7080,6 +7096,7 @@ snapshots:
       arch: 2.2.0
       execa: 5.1.1
       is-wsl: 2.2.0
+    optional: true
 
   cliui@9.0.1:
     dependencies:
@@ -7092,8 +7109,10 @@ snapshots:
   color-convert@2.0.1:
     dependencies:
       color-name: 1.1.4
+    optional: true
 
-  color-name@1.1.4: {}
+  color-name@1.1.4:
+    optional: true
 
   commander@14.0.3: {}
 
@@ -7116,6 +7135,7 @@ snapshots:
   compressible@2.0.18:
     dependencies:
       mime-db: 1.54.0
+    optional: true
 
   compression@1.8.1(supports-color@10.2.2):
     dependencies:
@@ -7128,8 +7148,10 @@ snapshots:
       vary: 1.1.2
     transitivePeerDependencies:
       - supports-color
+    optional: true
 
-  concat-map@0.0.1: {}
+  concat-map@0.0.1:
+    optional: true
 
   confbox@0.1.8: {}
 
@@ -7144,7 +7166,8 @@ snapshots:
 
   consola@3.4.2: {}
 
-  content-disposition@0.5.2: {}
+  content-disposition@0.5.2:
+    optional: true
 
   convert-source-map@2.0.0: {}
 
@@ -7221,6 +7244,7 @@ snapshots:
       ms: 2.0.0
     optionalDependencies:
       supports-color: 10.2.2
+    optional: true
 
   debug@4.4.3(supports-color@10.2.2):
     dependencies:
@@ -7228,7 +7252,8 @@ snapshots:
     optionalDependencies:
       supports-color: 10.2.2
 
-  deep-extend@0.6.0: {}
+  deep-extend@0.6.0:
+    optional: true
 
   deepmerge@4.3.1: {}
 
@@ -7281,7 +7306,8 @@ snapshots:
 
   duplexer@0.1.2: {}
 
-  eastasianwidth@0.2.0: {}
+  eastasianwidth@0.2.0:
+    optional: true
 
   editorconfig@3.0.2:
     dependencies:
@@ -7300,9 +7326,11 @@ snapshots:
 
   emoji-regex@10.6.0: {}
 
-  emoji-regex@8.0.0: {}
+  emoji-regex@8.0.0:
+    optional: true
 
-  emoji-regex@9.2.2: {}
+  emoji-regex@9.2.2:
+    optional: true
 
   encodeurl@2.0.1: {}
 
@@ -7481,6 +7509,7 @@ snapshots:
       onetime: 5.1.2
       signal-exit: 3.0.7
       strip-final-newline: 2.0.0
+    optional: true
 
   execa@8.0.1:
     dependencies:
@@ -7629,7 +7658,8 @@ snapshots:
       dunder-proto: 1.0.1
       es-object-atoms: 1.1.2
 
-  get-stream@6.0.1: {}
+  get-stream@6.0.1:
+    optional: true
 
   get-stream@8.0.1: {}
 
@@ -7714,7 +7744,8 @@ snapshots:
 
   has-bigints@1.1.0: {}
 
-  has-flag@4.0.0: {}
+  has-flag@4.0.0:
+    optional: true
 
   has-property-descriptors@1.0.2:
     dependencies:
@@ -7757,7 +7788,8 @@ snapshots:
 
   httpxy@0.5.6: {}
 
-  human-signals@2.1.0: {}
+  human-signals@2.1.0:
+    optional: true
 
   human-signals@5.0.0: {}
 
@@ -7858,7 +7890,8 @@ snapshots:
       call-bound: 1.0.4
       has-tostringtag: 1.0.2
 
-  is-docker@2.2.1: {}
+  is-docker@2.2.1:
+    optional: true
 
   is-docker@3.0.0: {}
 
@@ -7872,7 +7905,8 @@ snapshots:
     dependencies:
       call-bound: 1.0.4
 
-  is-fullwidth-code-point@3.0.0: {}
+  is-fullwidth-code-point@3.0.0:
+    optional: true
 
   is-generator-function@1.1.2:
     dependencies:
@@ -7914,7 +7948,8 @@ snapshots:
 
   is-path-inside@4.0.0: {}
 
-  is-port-reachable@4.0.0: {}
+  is-port-reachable@4.0.0:
+    optional: true
 
   is-reference@1.2.1:
     dependencies:
@@ -7970,6 +8005,7 @@ snapshots:
   is-wsl@2.2.0:
     dependencies:
       is-docker: 2.2.1
+    optional: true
 
   is-wsl@3.1.1:
     dependencies:
@@ -8157,13 +8193,15 @@ snapshots:
       braces: 3.0.3
       picomatch: 2.3.2
 
-  mime-db@1.33.0: {}
+  mime-db@1.33.0:
+    optional: true
 
   mime-db@1.54.0: {}
 
   mime-types@2.1.18:
     dependencies:
       mime-db: 1.33.0
+    optional: true
 
   mime-types@3.0.2:
     dependencies:
@@ -8171,7 +8209,8 @@ snapshots:
 
   mime@4.1.2: {}
 
-  mimic-fn@2.1.0: {}
+  mimic-fn@2.1.0:
+    optional: true
 
   mimic-fn@4.0.0: {}
 
@@ -8182,12 +8221,14 @@ snapshots:
   minimatch@3.1.5:
     dependencies:
       brace-expansion: 1.1.21
+    optional: true
 
   minimatch@5.1.9:
     dependencies:
       brace-expansion: 2.1.7
 
-  minimist@1.2.8: {}
+  minimist@1.2.8:
+    optional: true
 
   minipass@7.1.3: {}
 
@@ -8206,7 +8247,8 @@ snapshots:
 
   mrmime@2.0.1: {}
 
-  ms@2.0.0: {}
+  ms@2.0.0:
+    optional: true
 
   ms@2.1.3: {}
 
@@ -8224,7 +8266,8 @@ snapshots:
 
   nanotar@0.3.0: {}
 
-  negotiator@0.6.4: {}
+  negotiator@0.6.4:
+    optional: true
 
   nitropack@2.13.6(bare-buffer@3.7.1)(rolldown@1.2.16)(srvx@1.0.5)(supports-color@10.2.2)(vite@8.3.6(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)):
     dependencies:
@@ -8368,6 +8411,7 @@ snapshots:
   npm-run-path@4.0.1:
     dependencies:
       path-key: 3.1.1
+    optional: true
 
   npm-run-path@5.3.0:
     dependencies:
@@ -8564,11 +8608,13 @@ snapshots:
     dependencies:
       ee-first: 1.1.1
 
-  on-headers@1.1.0: {}
+  on-headers@1.1.0:
+    optional: true
 
   onetime@5.1.2:
     dependencies:
       mimic-fn: 2.1.0
+    optional: true
 
   onetime@6.0.0:
     dependencies:
@@ -8603,7 +8649,8 @@ snapshots:
 
   path-browserify@1.0.1: {}
 
-  path-is-inside@1.0.2: {}
+  path-is-inside@1.0.2:
+    optional: true
 
   path-key@3.1.1: {}
 
@@ -8616,7 +8663,8 @@ snapshots:
       lru-cache: 11.5.3
       minipass: 7.1.3
 
-  path-to-regexp@3.3.0: {}
+  path-to-regexp@3.3.0:
+    optional: true
 
   pathe@1.1.2: {}
 
@@ -8689,7 +8737,8 @@ snapshots:
 
   radix3@1.1.2: {}
 
-  range-parser@1.2.0: {}
+  range-parser@1.2.0:
+    optional: true
 
   range-parser@1.3.0: {}
 
@@ -8704,6 +8753,7 @@ snapshots:
       ini: 1.3.8
       minimist: 1.2.8
       strip-json-comments: 2.0.1
+    optional: true
 
   readable-stream@2.3.8:
     dependencies:
@@ -8774,10 +8824,12 @@ snapshots:
     dependencies:
       rc: 1.2.8
       safe-buffer: 5.2.1
+    optional: true
 
   registry-url@3.1.0:
     dependencies:
       rc: 1.2.8
+    optional: true
 
   regjsgen@0.8.0: {}
 
@@ -8935,6 +8987,7 @@ snapshots:
       path-is-inside: 1.0.2
       path-to-regexp: 3.3.0
       range-parser: 1.2.0
+    optional: true
 
   serve-placeholder@2.0.2:
     dependencies:
@@ -8964,6 +9017,7 @@ snapshots:
       update-check: 1.5.4
     transitivePeerDependencies:
       - supports-color
+    optional: true
 
   set-function-length@1.2.2:
     dependencies:
@@ -9083,12 +9137,14 @@ snapshots:
       emoji-regex: 8.0.0
       is-fullwidth-code-point: 3.0.0
       strip-ansi: 6.0.1
+    optional: true
 
   string-width@5.1.2:
     dependencies:
       eastasianwidth: 0.2.0
       emoji-regex: 9.2.2
       strip-ansi: 7.2.0
+    optional: true
 
   string-width@7.2.0:
     dependencies:
@@ -9158,6 +9214,7 @@ snapshots:
   strip-ansi@6.0.1:
     dependencies:
       ansi-regex: 5.0.1
+    optional: true
 
   strip-ansi@7.2.0:
     dependencies:
@@ -9165,11 +9222,13 @@ snapshots:
 
   strip-comments@2.0.1: {}
 
-  strip-final-newline@2.0.0: {}
+  strip-final-newline@2.0.0:
+    optional: true
 
   strip-final-newline@3.0.0: {}
 
-  strip-json-comments@2.0.1: {}
+  strip-json-comments@2.0.1:
+    optional: true
 
   strip-literal@4.0.0:
     dependencies:
@@ -9182,6 +9241,7 @@ snapshots:
   supports-color@7.2.0:
     dependencies:
       has-flag: 4.0.0
+    optional: true
 
   supports-preserve-symlinks-flag@1.0.0: {}
 
@@ -9268,7 +9328,8 @@ snapshots:
 
   type-fest@0.16.0: {}
 
-  type-fest@2.19.0: {}
+  type-fest@2.19.0:
+    optional: true
 
   type-fest@5.10.0:
     dependencies:
@@ -9514,12 +9575,14 @@ snapshots:
     dependencies:
       registry-auth-token: 3.3.2
       registry-url: 3.1.0
+    optional: true
 
   uqr@0.1.3: {}
 
   util-deprecate@1.0.2: {}
 
-  vary@1.1.2: {}
+  vary@1.1.2:
+    optional: true
 
   verkit@0.5.0: {}
 
@@ -9780,6 +9843,7 @@ snapshots:
   widest-line@4.0.1:
     dependencies:
       string-width: 5.1.2
+    optional: true
 
   workbox-background-sync@7.4.1:
     dependencies:
@@ -9899,6 +9963,7 @@ snapshots:
       ansi-styles: 6.2.3
       string-width: 5.1.2
       strip-ansi: 7.2.0
+    optional: true
 
   wrap-ansi@9.0.2:
     dependencies:

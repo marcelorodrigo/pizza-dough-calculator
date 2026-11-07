@@ -25,17 +25,9 @@ async function renderedColors(page: Page) {
   })
 }
 
-test('follows the system dark preference before the user chooses', async ({ page, goto }) => {
-  await page.emulateMedia({ colorScheme: 'dark' })
-  await goto('/', { waitUntil: 'hydration' })
-
-  await expect(page.locator('html')).toHaveClass(/dark/)
-  await expect(page.locator('meta[name="theme-color"]')).toHaveAttribute('content', '#161311')
-  await expect(page.getByRole('group', { name: 'Color theme' }).getByRole('button', { name: 'System' })).toHaveAttribute('aria-pressed', 'true')
-})
-
-test('applies the dark theme before the app bundle initializes', async ({ page }) => {
-  await page.emulateMedia({ colorScheme: 'dark' })
+/** Captures the theme applied before the Nuxt client bundle can hydrate. */
+async function captureFirstPaintTheme(page: Page, colorScheme: 'dark' | 'light') {
+  await page.emulateMedia({ colorScheme })
   await page.addInitScript(() => {
     requestAnimationFrame(() => {
       const root = document.documentElement
@@ -50,11 +42,28 @@ test('applies the dark theme before the app bundle initializes', async ({ page }
     Boolean((window as typeof window & { __firstPaintTheme?: string }).__firstPaintTheme)
   )
 
-  const firstPaintTheme = await page.evaluate(() =>
+  return page.evaluate(() =>
     (window as typeof window & { __firstPaintTheme?: string }).__firstPaintTheme
   )
-  expect(firstPaintTheme).toBe('dark')
+}
+
+test('follows the system dark preference before the user chooses', async ({ page, goto }) => {
+  await page.emulateMedia({ colorScheme: 'dark' })
+  await goto('/', { waitUntil: 'hydration' })
+
   await expect(page.locator('html')).toHaveClass(/dark/)
+  await expect(page.locator('meta[name="theme-color"]')).toHaveAttribute('content', '#161311')
+  await expect(page.getByRole('group', { name: 'Color theme' }).getByRole('button', { name: 'System' })).toHaveAttribute('aria-pressed', 'true')
+})
+
+test('applies the dark theme before the app bundle initializes', async ({ page }) => {
+  expect(await captureFirstPaintTheme(page, 'dark')).toBe('dark')
+  await expect(page.locator('html')).toHaveClass(/dark/)
+})
+
+test('applies the light theme before the app bundle initializes', async ({ page }) => {
+  expect(await captureFirstPaintTheme(page, 'light')).toBe('light')
+  await expect(page.locator('html')).not.toHaveClass(/dark/)
 })
 
 test('follows the system light preference before the user chooses', async ({ page, goto }) => {

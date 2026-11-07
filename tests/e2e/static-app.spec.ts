@@ -14,6 +14,16 @@ test('static output serves every calculator route', async ({ page, goto }) => {
   }
 })
 
+test('returns 404 for missing assets but serves client routes', async ({ page }) => {
+  expect((await page.request.get('/_nuxt/does-not-exist')).status()).toBe(404)
+  expect((await page.request.get('/_nuxt/does-not-exist.js')).status()).toBe(404)
+  expect((await page.request.get('/missing.png')).status()).toBe(404)
+
+  const clientRoute = await page.request.get('/client-only-route')
+  expect(clientRoute.status()).toBe(200)
+  expect(clientRoute.headers()['content-type']).toContain('text/html')
+})
+
 test('generated output includes the PWA manifest and precaching service worker', async ({ page }) => {
   const manifestResponse = await page.request.get('/manifest.webmanifest')
   expect(manifestResponse.ok()).toBe(true)
