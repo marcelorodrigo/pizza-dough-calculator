@@ -18,7 +18,14 @@ describe('OfflineStatus', () => {
     const wrapper = mount(OfflineStatus)
     await nextTick()
 
-    expect(wrapper.get('output').text()).toContain('You’re offline')
+    const notice = wrapper.get('output')
+
+    expect(notice.text()).toContain('You’re offline')
+    // <output> carries an implicit status role with a polite live region. Keeping
+    // the element free of an explicit role or aria-live override preserves that.
+    expect(notice.element.tagName).toBe('OUTPUT')
+    expect(notice.attributes('role')).toBeUndefined()
+    expect(notice.attributes('aria-live')).not.toBe('assertive')
 
     setOnline(true)
     window.dispatchEvent(new Event('online'))
