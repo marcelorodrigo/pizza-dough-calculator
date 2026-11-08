@@ -38,6 +38,7 @@
     "sirv": "3.0.2",
     "tailwindcss": "^4.3.4",
     "typescript": "^5.9.3",
+    "unplugin-vue-components": "^32.1.0",
     "vitest": "^5.1.0",
     "vue-tsc": "^3.3.14"
   }
