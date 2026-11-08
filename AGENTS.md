@@ -33,7 +33,7 @@ CI (`.github/workflows/build.yml`) runs, in order: `typecheck` → `test:coverag
 - `app/composables/usePersistedCalculatorState.ts` — loads/saves state via `app/services/calculator-state-store.ts` (versioned `localStorage` keys: `dough-calculator:<key>`, currently key `recipe`). The store is injected by `app/plugins/calculator-state.client.ts`.
 - `app/utils/format-results.ts` — display formatting/rounding. Domain calculations deliberately keep unrounded intermediates; tests assert with `toBeCloseTo`.
 
-Adding a route requires updating the `nitro.prerender.routes` list in `nuxt.config.ts` (static preset). The service worker is disabled in dev (`pwa.devOptions.enabled: false`); PWA/offline behavior is only verifiable against `pnpm generate` + `pnpm preview` output.
+Adding a route requires adding an entry to `app/utils/calculator-routes.ts`; `nitro.prerender.routes` in `nuxt.config.ts` is derived from that list (static preset). The service worker is disabled in dev (`pwa.devOptions.enabled: false`); PWA/offline behavior is only verifiable against `pnpm generate` + `pnpm preview` output.
 
 ## Testing
 

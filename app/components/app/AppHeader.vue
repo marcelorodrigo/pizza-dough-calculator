@@ -1,12 +1,8 @@
 <script setup lang="ts">
 import { useThemePreference } from '../../composables/useThemePreference'
+import { calculatorRoutes } from '../../utils/calculator-routes'
 
-const links = [
-  { label: 'Recipe', to: '/' },
-  { label: 'Flour strength', to: '/tools/flour-strength' },
-  { label: 'Tin mass', to: '/tools/tin-mass' },
-  { label: 'Water temp', to: '/tools/water-temperature' }
-]
+const links = calculatorRoutes.map(({ path, label }) => ({ label, to: path }))
 
 const { preference, setPreference } = useThemePreference()
 </script>
