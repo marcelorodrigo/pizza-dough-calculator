@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import ThemePreferenceToggle from './ThemePreferenceToggle.vue'
 import { useThemePreference } from '../../composables/useThemePreference'
 
 const links = [

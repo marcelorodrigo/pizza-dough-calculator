@@ -4,6 +4,7 @@ import { createThemeInitScript } from './app/utils/theme-init-script'
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   ssr: false,
+  components: [{ path: '~/components', pathPrefix: false }],
   vite: {
     plugins: [tailwindcss()]
   },

@@ -2,8 +2,6 @@
 import { createDefaultFlourStrengthState } from '../../domain/calculator-inputs'
 import { isFlourStrengthCalculatorState } from '../../domain/calculator-persistence'
 import { usePersistedCalculatorState } from '../../composables/usePersistedCalculatorState'
-import FlourStrengthCalculator from '../../components/tools/FlourStrengthCalculator.vue'
-import CalculatorNavigation from '../../components/app/CalculatorNavigation.vue'
 
 const calculator = usePersistedCalculatorState(
   'flour-strength',

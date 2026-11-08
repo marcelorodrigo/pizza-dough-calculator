@@ -1,10 +1,5 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import CheckboxField from '../form/CheckboxField.vue'
-import NumberField from '../form/NumberField.vue'
-import RadioGroupField from '../form/RadioGroupField.vue'
-import SelectField from '../form/SelectField.vue'
-import SectionCard from '../ui/SectionCard.vue'
 import type { DoughRecipeInput, TemperatureUnit, YeastType } from '../../domain/dough-recipe/types'
 import type { DoughRecipeFieldErrors } from '../../domain/dough-recipe/validation'
 import { temperatureUnitOptions } from '../../utils/temperature-unit-options'

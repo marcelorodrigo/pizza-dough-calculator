@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import NumberField from '../form/NumberField.vue'
-import SectionCard from '../ui/SectionCard.vue'
 import { calculateRectangularTinMass, calculateRoundTinMass } from '../../domain/tin-dough-mass'
 import type { TinDoughMassCalculatorState } from '../../domain/calculator-inputs'
 import { validateTinDoughMassInput } from '../../domain/secondary-validation'

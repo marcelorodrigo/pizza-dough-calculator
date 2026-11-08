@@ -1,8 +1,5 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import NumberField from '../form/NumberField.vue'
-import SelectField from '../form/SelectField.vue'
-import SectionCard from '../ui/SectionCard.vue'
 import {
   calculateWaterTemperature,
   setWaterTemperatureUnit,

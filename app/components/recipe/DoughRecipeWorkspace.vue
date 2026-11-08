@@ -1,10 +1,5 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import DoughTargetSection from './DoughTargetSection.vue'
-import FermentationSection from './FermentationSection.vue'
-import FlourMixSection from './FlourMixSection.vue'
-import PrefermentsSection from './PrefermentsSection.vue'
-import RecipeResultsPanel from './RecipeResultsPanel.vue'
 import { calculateDoughRecipe } from '../../domain/dough-recipe/calculateDoughRecipe'
 import { createDefaultDoughRecipeInput } from '../../domain/dough-recipe/defaults'
 import { isDoughRecipeInput } from '../../domain/dough-recipe/persistence'
