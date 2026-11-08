@@ -1,4 +1,5 @@
 import tailwindcss from '@tailwindcss/vite'
+import { calculatorRoutes } from './app/utils/calculator-routes'
 import { createThemeInitScript } from './app/utils/theme-init-script'
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
@@ -51,7 +52,7 @@ export default defineNuxtConfig({
   nitro: {
     preset: 'static',
     prerender: {
-      routes: ['/', '/tools/flour-strength', '/tools/tin-mass', '/tools/water-temperature'],
+      routes: calculatorRoutes.map(route => route.path),
       crawlLinks: true,
       failOnError: true
     }

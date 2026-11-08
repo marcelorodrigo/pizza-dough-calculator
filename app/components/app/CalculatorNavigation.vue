@@ -1,10 +1,12 @@
 <script setup lang="ts">
-const links = [
-  { title: 'Recipe calculator', detail: 'Build your dough', to: '/', number: '01' },
-  { title: 'Flour strength', detail: 'Blend by W value', to: '/tools/flour-strength', number: '02' },
-  { title: 'Tin dough mass', detail: 'Size your pan', to: '/tools/tin-mass', number: '03' },
-  { title: 'Water temperature', detail: 'Dial in your mix', to: '/tools/water-temperature', number: '04' }
-]
+import { calculatorRoutes } from '../../utils/calculator-routes'
+
+const links = calculatorRoutes.map(({ path, navTitle, navDetail, number }) => ({
+  title: navTitle,
+  detail: navDetail,
+  to: path,
+  number
+}))
 </script>
 
 <template>
