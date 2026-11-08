@@ -2,8 +2,6 @@
 import { createDefaultTinDoughMassState } from '../../domain/calculator-inputs'
 import { isTinDoughMassCalculatorState } from '../../domain/calculator-persistence'
 import { usePersistedCalculatorState } from '../../composables/usePersistedCalculatorState'
-import TinDoughMassCalculator from '../../components/tools/TinDoughMassCalculator.vue'
-import CalculatorNavigation from '../../components/app/CalculatorNavigation.vue'
 
 const calculator = usePersistedCalculatorState(
   'tin-mass',

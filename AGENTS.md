@@ -28,7 +28,7 @@ CI (`.github/workflows/build.yml`) runs, in order: `typecheck` → `test:coverag
 ## Architecture
 
 - `app/domain/` — pure TypeScript, no Vue imports. Each calculator has its calculation module, `validation.ts` (or `secondary-validation.ts`), and persistence type guards. `dough-recipe/calculateDoughRecipe.ts` is the core formula engine; `transitions.ts` handles style/unit/flour-count changes and normalization.
-- `app/components/` — thin presentational components; form primitives (`NumberField`, `SelectField`, etc.) use `defineModel`.
+- `app/components/` — thin presentational components, auto-imported with `pathPrefix: false`, so templates use flat basenames (`<NumberField>`, not `<FormNumberField>`). Component filenames must be globally unique; `tests/components/component-names.test.ts` enforces it. Form primitives (`NumberField`, `SelectField`, etc.) use `defineModel`.
 - `app/pages/` — one page per calculator; `app/pages/index.vue` hosts the recipe workspace.
 - `app/composables/usePersistedCalculatorState.ts` — loads/saves state via `app/services/calculator-state-store.ts` (versioned `localStorage` keys: `dough-calculator:<key>`, currently key `recipe`). The store is injected by `app/plugins/calculator-state.client.ts`.
 - `app/utils/format-results.ts` — display formatting/rounding. Domain calculations deliberately keep unrounded intermediates; tests assert with `toBeCloseTo`.
@@ -40,13 +40,13 @@ Adding a route requires updating the `nitro.prerender.routes` list in `nuxt.conf
 - Unit/component tests use Vitest + happy-dom + `@vue/test-utils`; they do not use `@nuxt/test-utils`. `vitest.config.ts` includes `tests/**/*.test.ts`; run a single file with `pnpm test tests/domain/water-temperature.test.ts`.
 - E2E tests use `@nuxt/test-utils/playwright` in host mode. The static preset has no `.output/server/index.mjs`, so the default Nuxt Playwright fixture cannot start the app. `playwright.config.ts` sets `use.nuxt.host` to the preview server started by `webServer` (`pnpm generate && pnpm preview`).
 - Use `goto(..., { waitUntil: 'hydration' })` for initial navigations. Keep `page.goto` for flows where the service worker or first paint is the behavior under test, and for reloads.
-- If a future test needs Nuxt auto-imports, `useNuxtApp`, or `mountSuspended`, add a `defineVitestProject` Nuxt project and `tests/nuxt/**/*.test.ts`. Do not mix Nuxt runtime helpers and E2E helpers in one file.
+- Components auto-import in Vitest through `unplugin-vue-components` (configured in `vitest.config.ts`). If a future test needs other Nuxt runtime helpers (`useNuxtApp`, `mountSuspended`), add a `defineVitestProject` Nuxt project and `tests/nuxt/**/*.test.ts`. Do not mix Nuxt runtime helpers and E2E helpers in one file.
 - Test layout: `tests/{domain,components,composables,plugins}` for Vitest and `tests/e2e` for Playwright. Vitest only includes `.test.ts`; Playwright only `.spec.ts`.
 
 ## Conventions and gotchas
 
 - Validation is the single source of truth: persistence type guards call the same `validate*` functions. Disabled fields are excluded by default; pass `{ includeDisabledFields: true }` when validating a whole persisted object. Keep this contract when adding fields.
-- Use **relative imports** for app code and test subjects. The Vitest config has no `~`/`@` alias, and components import Vue APIs explicitly rather than relying on Nuxt auto-imports. Test-runner imports (`vitest`, `@vue/test-utils`, `@playwright/test`, `@nuxt/test-utils/playwright`) are package imports and expected. The one exception is `useNuxtApp()`, which unit tests stub with `vi.stubGlobal`.
+- Use **relative imports** for `app/utils`, `app/composables`, `app/domain`, and test subjects. Component tags are auto-imported from `app/components` and need no import. The Vitest config has no `~`/`@` alias, and components import Vue APIs explicitly rather than relying on Nuxt auto-imports. Test-runner imports (`vitest`, `@vue/test-utils`, `@playwright/test`, `@nuxt/test-utils/playwright`) are package imports and expected. The one exception is `useNuxtApp()`, which unit tests stub with `vi.stubGlobal`.
 - Unit tests use Vitest + happy-dom + `@vue/test-utils` and do **not** use `@nuxt/test-utils`. Mount components directly, inject a fake `CalculatorStateStore` via `vi.stubGlobal('useNuxtApp', ...)`, and use `tests/helpers/nuxt-stubs.ts` for `NuxtLink`/`NuxtPage`/`NuxtLayout`. `@nuxt/test-utils` is used only by Playwright in host mode.
 - E2E tests select controls by accessible labels/`aria-label` (e.g. `getByLabel('Room fermentation time')`). Renaming a label or result `aria-label` breaks tests; update both together.
 - `NumberField` emits `input.valueAsNumber`, so empty/invalid input becomes `NaN`; validation must reject non-finite values.

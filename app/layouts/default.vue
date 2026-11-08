@@ -1,9 +1,3 @@
-<script setup lang="ts">
-import AppHeader from '../components/app/AppHeader.vue'
-import OfflineStatus from '../components/app/OfflineStatus.vue'
-import PwaUpdatePrompt from '../components/app/PwaUpdatePrompt.vue'
-</script>
-
 <template>
   <div class="flex min-h-screen flex-col">
     <AppHeader />

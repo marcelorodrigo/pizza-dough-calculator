@@ -1,8 +1,3 @@
-<script setup lang="ts">
-import DoughRecipeWorkspace from '../components/recipe/DoughRecipeWorkspace.vue'
-import CalculatorNavigation from '../components/app/CalculatorNavigation.vue'
-</script>
-
 <template>
   <section class="mb-[30px] flex items-end justify-between gap-[24px] below-720:mb-[22px] below-720:block" aria-labelledby="page-title">
     <div>

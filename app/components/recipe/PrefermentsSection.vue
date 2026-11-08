@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import CheckboxField from '../form/CheckboxField.vue'
-import NumberField from '../form/NumberField.vue'
-import SectionCard from '../ui/SectionCard.vue'
 import type { DoughRecipeInput, PrefermentType } from '../../domain/dough-recipe/types'
 import type { DoughRecipeFieldErrors } from '../../domain/dough-recipe/validation'
 
